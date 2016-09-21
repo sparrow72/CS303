@@ -8,7 +8,7 @@
 #include <list>
 #include <iomanip>
 #include <locale>
-#include "term.h"
+#include "Term.cpp"
 using namespace std;
 
 void fillList(list <Term> &lis);
@@ -17,6 +17,7 @@ void mainMenu();
 
 void main()
 {
+
 	mainMenu();
 
 	string answer;
