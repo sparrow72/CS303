@@ -1,4 +1,4 @@
-// Alex, Zach, and Josh Gregory
+// Alex Malko, Zach Theiss, and Josh Gregory
 // CS 303 Project 1
 // Fall 2016
 // Prof. Mohammad Kuhail
@@ -99,12 +99,14 @@ void fillList(list <Term> &lis)
 	for (int i = 0; i != str.size(); i++)//adds the string as char to the list
 	{
 		//add to term
+        //Need to connect into the class, using poly1/2
 	}
 }
 
 void printList(const list <Term> &lis)
 {
 	cout << "the sum of polynomials 1 and 2 is: ... \n";
+    //Need to link into class using result list
 	//loops through the list and outputs code
 	//for (list<Term>::iterator iter = lis.begin(); iter != lis.end(); ++iter)
 	//{
