@@ -10,18 +10,19 @@ using namespace std;
 
 class Term {
 public:
-	Term(); //Example can be found in List Header on BBoard
-	list<string> add_poly(); //Add them together
-	bool compare(); //Returns true or false based on correct or not
-	void setPoly1(list<string>& polynom); //Setters
-	void setPoly2(list<string>& polynom);
-	void setResult(list<string>& polynom);
-	list<string> getPoly1() { return poly1; } //Getters defined
-	list<string> getPoly2() { return poly2; }
-	list<string> getResult() { return result; }
-	~Term(); //Example can be found in List Header on BBoard
+	Term(int new_coefficient=1, int new_exponent = 1); //Example can be found in List Header on BBoard
+	
+    void setCoefficient(int new_coefficient = 1); //Mutators
+    void setExponent(int new_exponent = 1);
+
+    int getCoefficient() const; //Accessors
+    int getExponent() const;
+
+    friend bool operator >(const Term &lhs, const Term &rhs);
+    friend bool operator <(const Term &lhs, const Term &rhs);
 
 private:
-	list<string> poly1, poly2, result; //3 DLinked Lists
 
+    int coefficient, exponent;
+     
 };

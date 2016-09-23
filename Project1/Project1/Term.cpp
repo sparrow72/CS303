@@ -1,31 +1,49 @@
 #include "Term.h"
 
-Term::Term()
+
+
+
+Term::Term(int new_coefficient, int new_exponent)
 {
+    coefficient = new_coefficient; exponent = new_exponent;
 }
 
-list<string> Term::add_poly()
+void Term::setCoefficient(int new_coefficient)
 {
-	return list<string>();
+    coefficient = new_coefficient;      
 }
 
-bool Term::compare()
+void Term::setExponent(int new_exponent)
 {
-	return false;
+    exponent = new_exponent;
 }
 
-void Term::setPoly1(list<string>& polynom)
+int Term::getCoefficient() const 
 {
+    return coefficient;
 }
 
-void Term::setPoly2(list<string>& polynom)
-{
+int Term::getExponent() const
+{ 
+    return exponent;
 }
 
-void Term::setResult(list<string>& polynom)
+bool operator>(const Term & lhs, const Term & rhs)
 {
+    if (lhs.getExponent() > rhs.getExponent())
+    {
+        return true;
+    }
+
+    else { return false; }
 }
 
-Term::~Term()
+bool operator<(const Term & lhs, const Term & rhs)
 {
+    if (lhs.getExponent() < rhs.getExponent())
+    {
+        return true;
+    }
+
+    else { return false; }
 }
