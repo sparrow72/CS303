@@ -104,26 +104,37 @@ istream& operator>>(istream& in, Term& item)
             else if (str[i] == '^')
             {
                 i++;
-                cout << "This is the exp " << str[i] << endl;
+                if (str[i] == '-') {
+                    item.sign = str[i];
+                    i++;
+                }
                 temp = str[i];
+                for (int j = i; j < str.length(); j++) {
+                    if (isalpha(str[j]) || str[j + 1] == '^' || str[j + 1] == '+' || str[j + 1] == '-')
+                        break;
+                    if (!isalpha(str[j + 1])) {
+                        temp1 = str[j + 1];
+                        temp += temp1;
+                    }
+                }
                 exp = stoi(temp);
                 //Enter Exponent storage block
             }
             else {
+                temp = str[i];
                 for (int j = i; j < str.length(); j++) {
-                    if (!isalpha(str[j + 1])) {
-                        temp1 = str[j];
-                        temp = str[j + 1];
-                        temp = temp1 + temp;
-                    }
-                    if (isalpha(str[j]))
+                    if (isalpha(str[j]) || str[j + 1] == '^' || str[j + 1] == '+' || str[j + 1] == '-')
                         break;
+                    if (!isalpha(str[j + 1])) {
+                        temp1 = str[j + 1];
+                        temp += temp1;
+                    }
+
                     if (temp.length() > 0)
                         coeff = stoi(temp);
                     else {
                         cout << str[j] << endl;
                         coeff = stoi(str);
-                        cout << "This is coeff " << coeff << endl;
                         break;
                     }
                 }
