@@ -63,6 +63,21 @@ ostream& operator<<(ostream& out, Term& item)
 
 istream& operator>>(istream& in, Term& item)
 {
+	string str;
+	in >> str;
+
+	for (int i = 0; i<str.length(); ++i)
+	{
+		if (str[i] == 'x')
+		{
+		}
+			//ect
+			//make sure to include the posiblity of - and + exponents and coefficients
+			// and if the numbers are larger than one char
+			
+	}
+	return in;
 	
+
 }
 
