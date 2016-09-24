@@ -49,7 +49,6 @@ void main()
 
 void mainMenu() {
 
-
 	bool loop = true;
 	locale loc;
 	string answer;
@@ -106,16 +105,37 @@ void fillList(list <Term> &lis)
 
 bool compare(const Term& first, const Term& second)
 {
-	
-		if 
-			(first<second) return true;
-		else if
-			(first>second) return false;
-		else
-			cerr << "Error: ";
+
+	if
+		(first < second) return true;
+	else if
+		(first > second) return false;
+	else
+		cerr << "Error: ";
 }
 
-void printList(list<Term>& poly) {
+void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
+{
+
+	first.sort(compare);
+
+	list<Term>::iterator iter = first.begin();
+	list<Term>::iterator iter2 = sec.begin();
+
+	while (iter != first.end() || iter2 != sec.end())
+	{
+		if (first == sec)
+		{
+			//Term(first* +sec*);
+			//going to make a temp term, then make an overload for the = sign so i can set them equal to each other... 
+		}
+	}
+
+
+}
+
+void printList(list<Term>& poly)
+{
 	poly.sort(compare);
 	list<Term>::iterator iter = poly.begin();
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); ++iter)

@@ -48,8 +48,23 @@ bool operator<(const Term & lhs, const Term & rhs)
     else { return false; }
 }
 
+bool operator==(const Term & lhs, const Term & rhs)
+{
+	if (lhs.getExponent() == rhs.getExponent())
+	{
+		return true;
+	}
 
+	else { return false; }
+}
 
+Term operator+(const Term& lhs, const Term& rhs)
+{
+	Term result;
+	result.setExponent(lhs.getExponent);
+	result.setCoefficient(lhs.getCoefficient + rhs.getCoefficient);
+	return result;
+}
 
 ostream& operator<<(ostream& out, Term& item)
 {
