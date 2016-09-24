@@ -99,18 +99,25 @@ void fillList(list <Term> &lis)
 	for (int i = 0; i != str.size(); i++)//adds the string as char to the list
 	{
 		//add to term
-        //Need to connect into the class, using poly1/2
+		//Need to connect into the class, using poly1/2
 	}
 }
 
-void printList(const list <Term> &lis)
-{
-	cout << "the sum of polynomials 1 and 2 is: ... \n";
-    //Need to link into class using result list
-	//loops through the list and outputs code
-	//for (list<Term>::iterator iter = lis.begin(); iter != lis.end(); ++iter)
-	//{
-	//	//
-	//}
+
+
+
+void printList(const list<Term>& ply) {
+	
+	list<Term> poly, poly2, poly3;
+
+	list<Term>::iterator iter = poly.begin();
+
+	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); ++iter)
+	{
+		cout << *iter;
+	}
+
+	cout << '\n';
 }
+
 

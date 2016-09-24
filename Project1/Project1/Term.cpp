@@ -47,3 +47,22 @@ bool operator<(const Term & lhs, const Term & rhs)
 
     else { return false; }
 }
+
+
+
+
+ostream& operator<<(ostream& out, Term& item)
+{
+	if (item.sign == '+' || item.sign == '-')
+		out << item.sign;
+
+	out << item.coefficient << "x^" << item.exponent << "\n";
+	
+	return out;
+}
+
+istream& operator>>(istream& in, Term& item)
+{
+	
+}
+
