@@ -14,6 +14,7 @@ using namespace std;
 void fillList(list <Term> &lis);
 void printList(const list <Term> &lis);
 void mainMenu();
+bool compare(const Term& first, const Term& second);
 
 void main()
 {
@@ -103,15 +104,20 @@ void fillList(list <Term> &lis)
 	}
 }
 
-
-
-
-void printList(const list<Term>& ply) {
+bool compare(const Term& first, const Term& second)
+{
 	
-	list<Term> poly, poly2, poly3;
+		if 
+			(first<second) return true;
+		else if
+			(first>second) return false;
+		else
+			cerr << "Error: ";
+}
 
+void printList(list<Term>& poly) {
+	poly.sort(compare);
 	list<Term>::iterator iter = poly.begin();
-
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); ++iter)
 	{
 		cout << *iter;

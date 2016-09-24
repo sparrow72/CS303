@@ -20,7 +20,7 @@ public:
 
     friend bool operator >(const Term &lhs, const Term &rhs);
     friend bool operator <(const Term &lhs, const Term &rhs);
-
+	
 	
 
 	friend ostream& operator<<(ostream& out, Term& item);
