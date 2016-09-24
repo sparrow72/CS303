@@ -78,14 +78,15 @@ ostream& operator<<(ostream& out, Term& item)
 
 istream& operator>>(istream& in, Term& item)
 {
-	string str, temp;
+    string str;
     int exp, coeff, fin_str;
-	in >> str;
 
-    while(str != "") {
-        for (int i = 0; i < str.length(); ++i)
+    while (str != "") {
+        for (int i = 0; i < str.length(); i++)
         {
-            if (str[i] == 'x')
+            string temp, temp1;
+            cout << str[i] << endl;
+            if (str[i] == 'X' || str[i] == 'x')
             {
                 Term(coeff, exp);
                 //end coeff block
@@ -102,28 +103,39 @@ istream& operator>>(istream& in, Term& item)
             }
             else if (str[i] == '^')
             {
-                exp = str[i + 1];
+                i++;
+                cout << "This is the exp " << str[i] << endl;
+                temp = str[i];
+                exp = stoi(temp);
                 //Enter Exponent storage block
             }
             else {
-                if (!isalpha(str[i + 1])) {
-                    temp = str[i] + str[i + 1];
-                    coeff = stoi(temp);
+                for (int j = i; j < str.length(); j++) {
+                    if (!isalpha(str[j + 1])) {
+                        temp1 = str[j];
+                        temp = str[j + 1];
+                        temp = temp1 + temp;
+                    }
+                    if (isalpha(str[j]))
+                        break;
+                    if (temp.length() > 0)
+                        coeff = stoi(temp);
+                    else {
+                        cout << str[j] << endl;
+                        coeff = stoi(str);
+                        cout << "This is coeff " << coeff << endl;
+                        break;
+                    }
                 }
-                else if (str[i] == 0)
-                    continue;
-                else
-                    coeff = str[i];
 
                 //Add to coeff block
-                //String concatination, if str[i+1] is an int, str[i] + str[i+1]
             }
         }
-			//ect
-			//make sure to include the posiblity of - and + exponents and coefficients
-			//and if the numbers are larger than one char
-		//Create a node w/all left over
-	}
+        //ect
+        //make sure to include the posiblity of - and + exponents and coefficients
+        //and if the numbers are larger than one char
+        //Create a node w/all left over
+    }
 	return in;
 }
 
