@@ -118,16 +118,16 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 {
 
 	first.sort(compare);
-
+	Term temp;
 	list<Term>::iterator iter = first.begin();
 	list<Term>::iterator iter2 = sec.begin();
 
 	while (iter != first.end() || iter2 != sec.end())
 	{
-		if (first == sec)
+		if (*iter == *iter2)
 		{
-			//Term(first* +sec*);
-			//going to make a temp term, then make an overload for the = sign so i can set them equal to each other... 
+			temp = *iter + *iter2;
+			//need to add to third list
 		}
 	}
 
