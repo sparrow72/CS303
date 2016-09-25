@@ -10,23 +10,24 @@ using namespace std;
 
 class Term {
 public:
-	Term(int new_coefficient=1, int new_exponent = 1); //Example can be found in List Header on BBoard
-	
-    void setCoefficient(int new_coefficient = 1); //Mutators
-    void setExponent(int new_exponent = 1);
+	Term(int new_coefficient = 1, int new_exponent = 1); //Example can be found in List Header on BBoard
+	~Term();
 
-    int getCoefficient() const; //Accessors
-    int getExponent() const;
+	void setCoefficient(int new_coefficient = 1); //Mutators
+	void setExponent(int new_exponent = 1);
 
-    friend bool operator >(const Term &lhs, const Term &rhs);
-    friend bool operator <(const Term &lhs, const Term &rhs);
+	int getCoefficient() const; //Accessors
+	int getExponent() const;
+
+	friend bool operator >(const Term &lhs, const Term &rhs);
+	friend bool operator <(const Term &lhs, const Term &rhs);
 
 	friend bool operator == (const Term &lhs, const Term &rhs);
 	friend Term operator+(const Term& lhs, const Term& rhs);
 
 	friend ostream& operator<<(ostream& out, Term& item);
-	
+
 private:
 
-    int coefficient, exponent;
+	int coefficient, exponent;
 };

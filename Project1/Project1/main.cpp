@@ -99,11 +99,9 @@ void fillList(list <Term> &lis)
 	int exp, coeff;
 	cout << "please enter the polynomial: ";
 	cin >> str;
-
+	int i = 0;
 	while (!str.empty())
 	{
-		for (int i = 0; i < str.length(); i++)
-		{
 			// this code block will input the coefficient
 			if (str[i] == '-')
 			{
@@ -172,7 +170,7 @@ void fillList(list <Term> &lis)
 
 			lis.push_back(temp);
 			//destructor for temp
-		}
+			++i;
 
 	}
 
