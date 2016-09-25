@@ -81,65 +81,56 @@ istream& operator>>(istream& in, Term& item)
     string str;
     int exp, coeff, fin_str;
 
-    while (str != "") {
-        for (int i = 0; i < str.length(); i++)
+    while (str != "") { //Continue until empty string
+        for (int i = 0; i < str.length(); i++) //Iterate through string
         {
-            string temp, temp1;
-            cout << str[i] << endl;
-            if (str[i] == 'X' || str[i] == 'x')
+            string temp, temp1; //Resetting empty temps
+            if (str[i] == 'X' || str[i] == 'x') //Item is an X
             {
-                Term(coeff, exp);
-                //end coeff block
+                Term(coeff, exp); //end coeff block
             }
-            else if (str[i] == '-')
+            else if (str[i] == '-') //Item is a minus - 
             {
-                fin_str = stoi(str);
-                //Convert str to int, create term, move to next
+                fin_str = stoi(str); //Convert str to int, create term, move to next
             }
-            else if (str[i] == '+')
+            else if (str[i] == '+') // Item is a plus + 
             {
-                fin_str = stoi(str);
-                //Convert str to int, create term, move to next
+                fin_str = stoi(str); //Convert str to int, create term, move to next
             }
-            else if (str[i] == '^')
+            else if (str[i] == '^') //Item is a carrot ^
             {
-                i++;
-                if (str[i] == '-') {
-                    item.sign = str[i];
-                    i++;
+                i++; //Look at the exponent
+                if (str[i] == '-') { // Negative Exponent
+                    item.sign = str[i]; //Save the Negative Exponent
+                    i++; //Look at exponent
                 }
-                temp = str[i];
-                for (int j = i; j < str.length(); j++) {
-                    if (isalpha(str[j]) || str[j + 1] == '^' || str[j + 1] == '+' || str[j + 1] == '-')
+                temp = str[i]; //Save the exponent
+                for (int j = i; j < str.length(); j++) { // Check that the exponent is larger than 1 digit (ie 10)
+                    if (isalpha(str[j]) || str[j + 1] == '^' || str[j + 1] == '+' || str[j + 1] == '-') //If not a number, end
                         break;
-                    if (!isalpha(str[j + 1])) {
-                        temp1 = str[j + 1];
-                        temp += temp1;
+                    if (!isalpha(str[j + 1])) { //Next item is a digit (0)
+                        temp1 = str[j + 1]; //Make the exponenet a longer digit 
+                        temp += temp1; // (1 + 0 = 10)
                     }
                 }
-                exp = stoi(temp);
-                //Enter Exponent storage block
+                exp = stoi(temp); //Enter Exponent storage block
             }
             else {
-                temp = str[i];
-                for (int j = i; j < str.length(); j++) {
-                    if (isalpha(str[j]) || str[j + 1] == '^' || str[j + 1] == '+' || str[j + 1] == '-')
+                temp = str[i]; //Save the Coeff
+                for (int j = i; j < str.length(); j++) { //Check that the coeff is larger than 1 digit
+                    if (isalpha(str[j]) || str[j + 1] == '^' || str[j + 1] == '+' || str[j + 1] == '-') //If not a num, end
                         break;
-                    if (!isalpha(str[j + 1])) {
-                        temp1 = str[j + 1];
-                        temp += temp1;
+                    if (!isalpha(str[j + 1])) { //Next item is a digit (0)
+                        temp1 = str[j + 1]; //Make the coeff a longer digit
+                        temp += temp1; // (1 + 0 = 10)
                     }
-
-                    if (temp.length() > 0)
-                        coeff = stoi(temp);
+                    else if (temp.length() > 0) //string may be over, save the number
+                        coeff = stoi(temp); //Convert from string to int
                     else {
-                        cout << str[j] << endl;
-                        coeff = stoi(str);
+                        coeff = stoi(str); // Convert from string to int
                         break;
                     }
                 }
-
-                //Add to coeff block
             }
         }
         //ect
