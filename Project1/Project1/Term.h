@@ -1,5 +1,5 @@
 #pragma once
-// Alex Malko, Zach Theiss, and Josh Gregory
+// Josh Gregory, Zach Theiss, and Alex Malko
 // CS 303 Project 1
 // Fall 2016
 // Prof. Mohammad Kuhail
@@ -33,5 +33,4 @@ public:
 private:
 
     int coefficient, exponent;
-	char sign;
 };

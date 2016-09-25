@@ -1,4 +1,4 @@
-// Alex Malko, Zach Theiss, and Josh Gregory
+// Josh Gregory, Zach Theiss, and Alex Malko
 // CS 303 Project 1
 // Fall 2016
 // Prof. Mohammad Kuhail
@@ -11,9 +11,10 @@
 #include "Term.cpp"
 using namespace std;
 
+void mainMenu();
 void fillList(list <Term> &lis);
 void printList(const list <Term> &lis);
-void mainMenu();
+void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third);
 bool compare(const Term& first, const Term& second);
 
 void main()
