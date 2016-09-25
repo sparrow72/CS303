@@ -74,7 +74,7 @@ void mainMenu() {
 			fillList(lis[1]);
 			break;
 		case 'c':
-			addPoly(lis[0], lis[1], lis[2]);			
+			addPoly(lis[0], lis[1], lis[2]);
 			printList(lis[2]);//prints the list
 			lis[0].clear();
 			lis[1].clear();
@@ -93,24 +93,90 @@ void mainMenu() {
 
 void fillList(list <Term> &lis)
 {
-	string str;
-	Term ter[30];
+	Term temp;
+	temp.setCoefficient(2);
+	temp.setExponent(3);
+	lis.push_back(temp);
 
-	cout << "enter your polynomial:";
+	string str;
+	cout << "please enter the polynomial: ";
 	cin >> str;
-	for (int i = 0; i != str.size(); i++)//adds the string as char to the list
+
+
+	int exp, coeff;
+
+	while (str != "")
 	{
-		//add to term
-		//Need to connect into the class, using poly1/2
+		for (int i = 0; i < str.length(); i++)
+		{
+			// this code block will input the coefficient
+			if (str[i] == '-')
+			{
+				++i;
+				while (isdigit(str[i]))
+				{
+					///	coeff = atoi(str);///fix 
+					++i;
+				}
+				temp.setCoefficient(-coeff);
+			}
+			else if (str[i] == '+')
+			{
+				++i;
+				while (isdigit(str[i]))
+				{
+					///	coeff = atoi(str);///fix 
+					++i;
+				}
+				temp.setCoefficient(coeff);
+			}
+
+			//this code block will input the exponent
+			if (tolower(str[i]) == 'x')
+			{
+				//'skip' do not input
+				++i;
+				if (str[i] == '^')
+				{
+					//'skip' do not input
+					++i;
+					if (str[i] == '-')
+					{
+						++i;
+						while (isdigit(str[i]))
+						{
+							///	exp = atoi(str);///fix 
+							++i;
+						}
+						temp.setExponent(-exp);
+					}
+					else if (isdigit(str[i]) || str[i] == '+')
+					{
+						++i;
+						while (isdigit(str[i]))
+						{
+							///	exp = atoi(str);///fix 
+							++i;
+						}
+						temp.setExponent(exp);
+					}
+				}
+			}
+
+			lis.push_back(temp);
+			//destructor for temp
+		}
+
 	}
+
 }
 
 bool compare(const Term& first, const Term& second)
 {
 
-	if (first < second) 
+	if (first < second)
 		return true;
-	else if	(first > second)
+	else if (first > second)
 		return false;
 	else
 		return true;
