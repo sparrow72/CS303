@@ -8,7 +8,7 @@
 #include <list>
 #include <iomanip>
 #include <locale>
-#include "Term.cpp"
+#include "Term.h"
 using namespace std;
 
 void mainMenu();
@@ -222,7 +222,6 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 void printList(list<Term>& poly)
 {
 	poly.sort(compare);
-	list<Term>::iterator iter = poly.begin();
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); ++iter)
 	{
 		cout << *iter;
