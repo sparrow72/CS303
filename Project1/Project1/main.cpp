@@ -104,11 +104,12 @@ void fillList(list <Term> &lis)
 	{
 		for (int i = 0; i < str.length(); i++)
 		{
+			strNum = "0";
 			// this code block will input the coefficient
 			if (str[i] == '-')
 			{
 				++i;
-				while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
+				while (isdigit(str[i]))
 				{
 					strNum.push_back(str[i]); //Add the number
 					++i; //Increment the spot we are looking at
@@ -120,7 +121,18 @@ void fillList(list <Term> &lis)
 			else if (str[i] == '+')
 			{
 				++i;
-				while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
+				while (isdigit(str[i]))
+				{
+					strNum.push_back(str[i]); //Add the number
+					++i; //Increment 
+				}
+				coeff = stoi(strNum); //Set coeff
+				strNum.clear();
+				temp.setCoefficient(coeff); //Save the coeff to class obj
+			}
+			else if (isdigit(str[i]))
+			{
+				while (isdigit(str[i]))
 				{
 					strNum.push_back(str[i]); //Add the number
 					++i; //Increment 
@@ -142,7 +154,7 @@ void fillList(list <Term> &lis)
 					if (str[i] == '-')
 					{
 						++i;
-						while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
+						while (isdigit(str[i]))
 						{ //Check if the integer is larger than one digit
 							strNum.push_back(str[i]); 
 							++i;
@@ -154,12 +166,13 @@ void fillList(list <Term> &lis)
 					else if (isdigit(str[i]) || str[i] == '+')
 					{
 						++i;
-						while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
+						while (isdigit(str[i]))
 						{
 							strNum.push_back(str[i]); //Push back the int to the list
 							++i;
 						}
 						exp = stoi(strNum); //Save the Exp
+						//exp = strNum;
 						strNum.clear();
 						temp.setExponent(exp); //Save the pos exp to the class obj
 					}
