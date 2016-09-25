@@ -74,9 +74,11 @@ void mainMenu() {
 			fillList(lis[1]);
 			break;
 		case 'c':
-			//addPolys();			
+			addPoly(lis[0], lis[1], lis[2]);			
 			printList(lis[2]);//prints the list
-			//lis[2].clear();
+			lis[0].clear();
+			lis[1].clear();
+			lis[2].clear();
 			loop = false;
 			break;
 		case 'd':
@@ -106,12 +108,12 @@ void fillList(list <Term> &lis)
 bool compare(const Term& first, const Term& second)
 {
 
-	if
-		(first < second) return true;
-	else if
-		(first > second) return false;
+	if (first < second) 
+		return true;
+	else if	(first > second)
+		return false;
 	else
-		cerr << "Error: ";
+		return true;
 }
 
 void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
@@ -127,10 +129,20 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 		if (*iter == *iter2)
 		{
 			temp = *iter + *iter2;
-			//need to add to third list
+			third.push_back(temp);
 		}
+		else
+		{
+			third.push_back(*iter);
+			third.push_back(*iter2);
+		}
+		++iter;
+		++iter2;
 	}
-
+	first.sort(compare);
+	sec.sort(compare);
+	third.sort(compare);
+	printList(third);
 
 }
 
