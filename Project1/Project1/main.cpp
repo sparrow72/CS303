@@ -94,18 +94,12 @@ void mainMenu() {
 void fillList(list <Term> &lis)
 {
 	Term temp;
-	temp.setCoefficient(2);
-	temp.setExponent(3);
-	lis.push_back(temp);
-
-	string str;
+	string str, strNum;
+	int exp, coeff;
 	cout << "please enter the polynomial: ";
 	cin >> str;
 
-
-	int exp, coeff;
-
-	while (str != "")
+	while (!str.empty())
 	{
 		for (int i = 0; i < str.length(); i++)
 		{
@@ -113,21 +107,27 @@ void fillList(list <Term> &lis)
 			if (str[i] == '-')
 			{
 				++i;
-				while (isdigit(str[i]))
+				///while (isdigit(str[i]))
+				while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
 				{
-					///	coeff = atoi(str);///fix 
+					strNum.push_back(str[i]);
 					++i;
 				}
+				coeff = stoi(strNum);
+				strNum.clear();
 				temp.setCoefficient(-coeff);
 			}
 			else if (str[i] == '+')
 			{
 				++i;
-				while (isdigit(str[i]))
+				///while (isdigit(str[i]))
+				while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
 				{
-					///	coeff = atoi(str);///fix 
+					strNum.push_back(str[i]);
 					++i;
 				}
+				coeff = stoi(strNum);
+				strNum.clear();
 				temp.setCoefficient(coeff);
 			}
 
@@ -143,21 +143,27 @@ void fillList(list <Term> &lis)
 					if (str[i] == '-')
 					{
 						++i;
-						while (isdigit(str[i]))
+						///while (isdigit(str[i]))
+						while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
 						{
-							///	exp = atoi(str);///fix 
+							strNum.push_back(str[i]);
 							++i;
 						}
+						exp = stoi(strNum);
+						strNum.clear();
 						temp.setExponent(-exp);
 					}
 					else if (isdigit(str[i]) || str[i] == '+')
 					{
 						++i;
-						while (isdigit(str[i]))
+						///while (isdigit(str[i]))
+						while (str[i] == '0' || str[i] == '1' || str[i] == '2' || str[i] == '3' || str[i] == '4' || str[i] == '5' || str[i] == '6' || str[i] == '7' || str[i] == '8' || str[i] == '9')
 						{
-							///	exp = atoi(str);///fix 
+							strNum.push_back(str[i]);
 							++i;
 						}
+						exp = stoi(strNum);
+						strNum.clear();
 						temp.setExponent(exp);
 					}
 				}
