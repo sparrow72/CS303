@@ -11,6 +11,7 @@ using namespace std;
 class Term {
 public:
 	Term(int new_coefficient=1, int new_exponent = 1); //Example can be found in List Header on BBoard
+	Term(const Term &data) { exponent = data.getExponent(); coefficient = data.getCoefficient(); }
 	~Term();
 	
     void setCoefficient(int new_coefficient = 1); //Mutators
