@@ -14,6 +14,7 @@ public:
 	
     void setCoefficient(int new_coefficient = 1); //Mutators
     void setExponent(int new_exponent = 1);
+	void setIsfirst(bool isfirst = false);
 
     int getCoefficient() const; //Accessors
     int getExponent() const;
@@ -25,6 +26,9 @@ public:
     //Overloaded the equality operator
 	friend bool operator == (const Term &lhs, const Term &rhs);
 
+	//Overloaded the equality operator
+	Term& Term::operator=(const Term& rhs);
+
     //Overloaded the plus operator
 	friend Term operator+(const Term& lhs, const Term& rhs);
 
@@ -33,4 +37,5 @@ public:
 	
 private:
     int coefficient, exponent; //Keeping the coeff and exp of the polynomial term
+	bool isfirst;
 };

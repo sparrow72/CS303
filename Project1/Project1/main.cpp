@@ -220,9 +220,9 @@ bool compare(const Term& first, const Term& second)
 void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 {
 
-	///first.sort(compare); //Sort the list and compare
-	///sec.sort(compare);
-	Term temp;
+	first.sort(compare); //Sort the list and compare
+	sec.sort(compare);
+	Term temp, temp2;
 	list<Term>::iterator iter = first.begin(); //Create an itr
 	list<Term>::iterator iter2 = sec.begin(); //Create a second itr
 
@@ -235,8 +235,10 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 		}
 		else
 		{ //
-			third.push_back(*iter); //Add to the final term
-			third.push_back(*iter2); //Add to the final term
+			temp = *iter;
+			third.push_back(temp); //Add to the final term
+			temp2 = *iter2;
+			third.push_back(temp2); //Add to the final term
 		}
 		++iter; //Increment
 		++iter2; //Increment
@@ -247,9 +249,12 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 
 void printList(list<Term>& poly)
 {
-	///poly.sort(compare);
+//	poly.sort(compare);		
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
 	{
+		if (iter==poly.begin())
+		(*iter).setIsfirst(true);
+
 		cout << *iter; //Output the value at the interator
 	}
 
