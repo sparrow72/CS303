@@ -72,6 +72,16 @@ bool operator==(const Term & lhs, const Term & rhs)
 	else { return false; }
 }
 
+bool operator!=(const Term & lhs, const Term & rhs)
+{
+	if (lhs.getExponent() != rhs.getExponent())
+	{ //Left side is the same as right side
+		return true;
+	}
+	//The left and right side do not match
+	else { return false; }
+}
+
 Term operator+(const Term& lhs, const Term& rhs)
 {
 	Term result; //Create a result variable
