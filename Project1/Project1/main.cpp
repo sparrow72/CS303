@@ -141,6 +141,11 @@ void fillList(list <Term> &lis)
 				strNum.clear();
 				temp.setCoefficient(coeff); //Save the coeff to class obj
 			}
+			else
+			{
+				//the user entered x with an assumed coefficient of 1
+				temp.setCoefficient(1);
+			}
 
 			//this code block will input the exponent
 			if (tolower(str[i]) == 'x')
@@ -176,6 +181,11 @@ void fillList(list <Term> &lis)
 						strNum.clear();
 						temp.setExponent(exp); //Save the pos exp to the class obj
 					}
+				}
+				else
+				{
+					//the user entered x with an assumed exponent of 1
+					temp.setExponent(1);
 				}
 			}
 
