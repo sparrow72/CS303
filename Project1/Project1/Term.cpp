@@ -94,10 +94,17 @@ Term& Term::operator=(const Term& rhs)
 
 ostream& operator<<(ostream& out, Term& item)
 {
+	if (item.coefficient == 0) //Coeff is 0
+	{
+		out << "0"; //Insert a 0
+		return out;
+	}
+
 	if (!item.isfirst)
 	{
-		if (item.coefficient >= 0) //Coeff is not negative
+		if (item.coefficient > 0) //Coeff is not negative
 			out << " + "; //Insert a plus sign
+
 		else if (item.coefficient < 0) //Coeff is negative
 		{
 			out << " - "; //Insert a minus sign

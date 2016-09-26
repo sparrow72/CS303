@@ -75,6 +75,7 @@ void mainMenu() {
             break;
         case 'c': //Adds the polynomials
             addPoly(lis[0], lis[1], lis[2]);
+            printList(lis[2]);//prints the list
             lis[0].clear();
             lis[1].clear();
             lis[2].clear();
