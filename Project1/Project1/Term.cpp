@@ -11,10 +11,10 @@ Term::Term(int new_coefficient, int new_exponent)
 }
 
 Term::~Term()
-{
-	coefficient = 0;
-	exponent = 0;
-	isfirst = false;
+{ //Destructor for the variable defined
+	coefficient = 0; //Reset value
+	exponent = 0; //Reset value
+	isfirst = false; //Reset value
 }
 
 void Term::setCoefficient(int new_coefficient)

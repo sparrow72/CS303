@@ -3,10 +3,10 @@
 // CS 303 Project 1
 // Fall 2016
 // Prof. Mohammad Kuhail
-#include <iostream> 
-#include <list>
-#include <string>
-using namespace std;
+
+#include <iostream> //In and output in the implementation
+#include <list> //Used to hold the terms
+using namespace std; //Set namespace for the entire implementation
 
 class Term {
 public:
