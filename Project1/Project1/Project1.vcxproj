@@ -114,6 +114,10 @@
     <ClCompile Include="Term.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="list.h" />
+    <ClInclude Include="list_const_iterator.h" />
+    <ClInclude Include="list_iterator.h" />
+    <ClInclude Include="Ordered_List.h" />
     <ClInclude Include="Term.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

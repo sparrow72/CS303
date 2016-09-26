@@ -26,5 +26,17 @@
     <ClInclude Include="Term.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="list.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="list_const_iterator.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="list_iterator.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ordered_List.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

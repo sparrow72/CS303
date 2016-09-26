@@ -10,6 +10,13 @@ Term::Term(int new_coefficient, int new_exponent)
 	coefficient = new_coefficient; exponent = new_exponent; isfirst = false;
 }
 
+Term::~Term()
+{
+	coefficient = 0;
+	exponent = 0;
+	isfirst = false;
+}
+
 void Term::setCoefficient(int new_coefficient)
 { //Setting Coeff w/value passed in
 	coefficient = new_coefficient;isfirst = false;
