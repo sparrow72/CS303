@@ -90,11 +90,11 @@ void mainMenu()
 
 void fillList(list <Term> &lis)
 {
-    Term temp;
-    string str, strNum;
+    Term temp; //Temp term holder
+    string str, strNum; //Strings to hold the values
     int exp, coeff;
     cout << "please enter the polynomial: ";
-    cin >> str;
+    cin >> str; //User input for the string
     temp.setCoefficient(0);
     temp.setExponent(0);
     for (int i = 0; i < str.length(); i++)
