@@ -234,7 +234,7 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 			third.push_back(temp); //At the temp to the final answer
 		}
 		else
-		{ //
+		{ 
 			temp = *iter;
 			third.push_back(temp); //Add to the final term
 			temp2 = *iter2;
@@ -249,7 +249,7 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 
 void printList(list<Term>& poly)
 {
-//	poly.sort(compare);		
+	poly.sort(compare);		
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
 	{
 		if (iter==poly.begin())
