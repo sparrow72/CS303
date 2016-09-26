@@ -27,30 +27,30 @@ void main()
     do { //Ask to restart the menu
         cout << "\n\nDo you wish to try again? (Y/N): "; //
         cin >> answer; //Entering if they want to go again
-        string::size_type i = 0;
+        string::size_type i = 0; //Takes the first char of the string
         switch (tolower(answer[i], loc))//will work even if the user enters something other than a char
         {
         case 'n': //Do not go again
-            loop = false;
-            break;
+            loop = false; //End the loop
+            break; //End the case
         case 'y': //Go again
-            mainMenu();
-            loop = true;
-            break;
+            mainMenu(); //Rerun the menu
+            loop = true; //Start the loop again
+            break; //End the case
         default: //Bad input
-            cout << "\nInvalid, please try again";
-            break;
+            cout << "\nInvalid, please try again"; //Bad input
+            break; //End the case
         }
     } while (loop); //Start again
 
 }
 
-void mainMenu() {
-
-    bool loop = true;
-    locale loc;
-    string answer;
-    list<Term>lis[3];
+void mainMenu() 
+{
+    bool loop = true; //Set loop to true to start 
+    locale loc; //Using locale file
+    string answer; //User Input
+    list<Term>lis[3]; //Create 3 lists
 
     do { //Start the menu options
         cout << "\n Main Menu:\n";
@@ -60,9 +60,9 @@ void mainMenu() {
         cout << "\tD. Reset\n";
         cout << " Please select option A, B, C, or D: ";
 
-        cin >> answer;
+        cin >> answer; //Accept input from the user
 
-        string::size_type i = 0;
+        string::size_type i = 0; //Takes the first char of the string
         switch (tolower(answer[i], loc))//will work even if the user enters something other than a char
         { //Puts the character to a lower format
         case 'a': //Entering the first polynomial
