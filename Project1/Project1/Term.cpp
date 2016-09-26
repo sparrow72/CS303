@@ -94,17 +94,23 @@ Term& Term::operator=(const Term& rhs)
 
 ostream& operator<<(ostream& out, Term& item)
 {
-	if (item.isfirst)
-	{
-		if (item.coefficient < 0) //Coeff is negative
-			out << "-"; //Insert a minus sign
-	}
-	else if (!item.isfirst)
+	if (!item.isfirst)
 	{
 		if (item.coefficient >= 0) //Coeff is not negative
 			out << " + "; //Insert a plus sign
 		else if (item.coefficient < 0) //Coeff is negative
+		{
 			out << " - "; //Insert a minus sign
+			if (item.exponent == 0)
+				out << abs(item.coefficient);
+			else if (item.exponent == 1)
+				out << abs(item.coefficient) << "x";
+			else
+				out << abs(item.coefficient) << "x^" << item.exponent;
+			//Output the x and carrot symbol
+			return out; //Return the polynomial
+		}
+
 	}
 
 	if (item.exponent == 0)

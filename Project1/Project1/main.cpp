@@ -199,6 +199,7 @@ void fillList(list <Term> &lis)
                 //the user entered x with an assumed exponent of 1
                 exp = 1;
                 temp.setExponent(exp);
+				--i;
             }
         }
         lis.push_back(temp);
