@@ -144,7 +144,8 @@ void fillList(list <Term> &lis)
 		else
 		{
 			//the user entered x with an assumed coefficient of 1
-			temp.setCoefficient(1);
+			coeff = 1;
+			temp.setCoefficient(coeff);
 		}
 
 		//this code block will input the exponent
@@ -191,13 +192,13 @@ void fillList(list <Term> &lis)
 					strNum.clear();
 					temp.setExponent(exp); //Save the pos exp to the class obj
 				}
-				else
-				{
-					//the user entered x with an assumed exponent of 1
-					temp.setExponent(1);
-				}
 			}
-
+			else
+			{
+				//the user entered x with an assumed exponent of 1
+				exp = 1;
+				temp.setExponent(exp);
+			}
 		}
 		lis.push_back(temp);
 	}
