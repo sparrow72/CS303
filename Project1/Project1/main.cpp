@@ -64,7 +64,7 @@ void mainMenu() {
 		cout << " Please select option A, B, C, or D: ";
 
 		cin >> answer;
-        
+
 		string::size_type i = 0;
 		switch (tolower(answer[i], loc))//will work even if the user enters something other than a char
 		{ //Puts the character to a lower format
@@ -100,84 +100,95 @@ void fillList(list <Term> &lis)
 	cout << "please enter the polynomial: ";
 	cin >> str;
 
-		for (int i = 0; i < str.length(); i++)
+	for (int i = 0; i < str.length(); i++)
+	{
+		strNum = "0";
+		exp = 0; coeff = 0;
+		// this code block will input the coefficient
+		if (str[i] == '-')
 		{
-			strNum = "0";
-			// this code block will input the coefficient
-			if (str[i] == '-')
+			++i;
+			while (isdigit(str[i]))
 			{
-				++i;
-				while (isdigit(str[i]))
-				{
-					strNum.push_back(str[i]); //Add the number
-					++i; //Increment the spot we are looking at
-				}
-				coeff = stoi(strNum); //Set the Coeff
-				strNum.clear(); 
-				temp.setCoefficient(-coeff); //Set the Negative Coeff
+				strNum.push_back(str[i]); //Add the number
+				++i; //Increment the spot we are looking at
 			}
-			else if (str[i] == '+')
+			coeff = stoi(strNum); //Set the Coeff
+			strNum.clear();
+			temp.setCoefficient(-coeff); //Set the Negative Coeff
+		}
+		else if (str[i] == '+')
+		{
+			++i;
+			while (isdigit(str[i]))
 			{
-				++i;
-				while (isdigit(str[i]))
-				{
-					strNum.push_back(str[i]); //Add the number
-					++i; //Increment 
-				}
-				coeff = stoi(strNum); //Set coeff
-				strNum.clear();
-				temp.setCoefficient(coeff); //Save the coeff to class obj
+				strNum.push_back(str[i]); //Add the number
+				++i; //Increment 
 			}
-			else if (isdigit(str[i]))
+			coeff = stoi(strNum); //Set coeff
+			strNum.clear();
+			temp.setCoefficient(coeff); //Save the coeff to class obj
+		}
+		else if (isdigit(str[i]))
+		{
+			while (isdigit(str[i]))
 			{
-				while (isdigit(str[i]))
-				{
-					strNum.push_back(str[i]); //Add the number
-					++i; //Increment 
-				}
-				coeff = stoi(strNum); //Set coeff
-				strNum.clear();
-				temp.setCoefficient(coeff); //Save the coeff to class obj
+				strNum.push_back(str[i]); //Add the number
+				++i; //Increment 
 			}
-			else
-			{
-				//the user entered x with an assumed coefficient of 1
-				temp.setCoefficient(1);
-			}
+			coeff = stoi(strNum); //Set coeff
+			strNum.clear();
+			temp.setCoefficient(coeff); //Save the coeff to class obj
+		}
+		else
+		{
+			//the user entered x with an assumed coefficient of 1
+			temp.setCoefficient(1);
+		}
 
-			//this code block will input the exponent
-			if (tolower(str[i]) == 'x')
+		//this code block will input the exponent
+		if (tolower(str[i]) == 'x')
+		{
+			//'skip' do not input
+			++i;
+			if (str[i] == '^')
 			{
 				//'skip' do not input
 				++i;
-				if (str[i] == '^')
+				if (str[i] == '-')
 				{
-					//'skip' do not input
 					++i;
-					if (str[i] == '-')
-					{
+					while (isdigit(str[i]))
+					{ //Check if the integer is larger than one digit
+						strNum.push_back(str[i]);
 						++i;
-						while (isdigit(str[i]))
-						{ //Check if the integer is larger than one digit
-							strNum.push_back(str[i]); 
-							++i;
-						}
-						exp = stoi(strNum); //Save the exponent
-						strNum.clear();
-						temp.setExponent(-exp); //Save as a negative exp
 					}
-					else if (isdigit(str[i]) || str[i] == '+')
+					exp = stoi(strNum); //Save the exponent
+					strNum.clear();
+					temp.setExponent(-exp); //Save as a negative exp
+				}
+				else if (str[i] == '+')
+				{
+					++i;
+					while (isdigit(str[i]))
 					{
+						strNum.push_back(str[i]); //Push back the int to the list
 						++i;
-						while (isdigit(str[i]))
-						{
-							strNum.push_back(str[i]); //Push back the int to the list
-							++i;
-						}
-						exp = stoi(strNum); //Save the Exp
-						strNum.clear();
-						temp.setExponent(exp); //Save the pos exp to the class obj
 					}
+					exp = stoi(strNum); //Save the Exp
+					strNum.clear();
+					temp.setExponent(exp); //Save the pos exp to the class obj
+				}
+				else if (isdigit(str[i]))
+				{
+					while (isdigit(str[i]))
+					{
+						strNum.push_back(str[i]); //Push back the int to the list
+						++i;
+					}
+					exp = stoi(strNum); //Save the Exp
+					strNum.clear();
+					temp.setExponent(exp); //Save the pos exp to the class obj
 				}
 				else
 				{
@@ -185,9 +196,11 @@ void fillList(list <Term> &lis)
 					temp.setExponent(1);
 				}
 			}
-			lis.push_back(temp);
-			//destructor for temp
+
 		}
+		lis.push_back(temp);
+		//destructor for temp
+	}
 }
 
 bool compare(const Term& first, const Term& second)
