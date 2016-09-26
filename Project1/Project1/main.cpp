@@ -99,7 +99,8 @@ void fillList(list <Term> &lis)
 	int exp, coeff;
 	cout << "please enter the polynomial: ";
 	cin >> str;
-
+	temp.setCoefficient(0);
+	temp.setExponent(0);
 	for (int i = 0; i < str.length(); i++)
 	{
 		strNum = "0";
@@ -199,8 +200,9 @@ void fillList(list <Term> &lis)
 
 		}
 		lis.push_back(temp);
-		//destructor for temp
 	}
+	///TEST OUTPUT AND SORT... DEL BEFORE WE SUBMIT
+	printList(lis); //Output the final answer
 }
 
 bool compare(const Term& first, const Term& second)
@@ -217,7 +219,8 @@ bool compare(const Term& first, const Term& second)
 void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 {
 
-	first.sort(compare);
+	///first.sort(compare); //Sort the list and compare
+	///sec.sort(compare);
 	Term temp;
 	list<Term>::iterator iter = first.begin(); //Create an itr
 	list<Term>::iterator iter2 = sec.begin(); //Create a second itr
@@ -237,17 +240,14 @@ void addPoly(list<Term>& first, list<Term>& sec, list<Term>& third)
 		++iter; //Increment
 		++iter2; //Increment
 	}
-	first.sort(compare); //Sort the list and compare
-	sec.sort(compare);
-	third.sort(compare);
 	printList(third); //Output the final answer
 
 }
 
 void printList(list<Term>& poly)
 {
-	poly.sort(compare);
-	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); ++iter)
+	///poly.sort(compare);
+	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
 	{
 		cout << *iter; //Output the value at the interator
 	}
