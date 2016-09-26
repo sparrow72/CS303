@@ -1,4 +1,4 @@
-#include "Term.h"
+#include "Term.h" //Include the header
 using namespace std;
 // Josh Gregory, Zach Theiss, and Alex Malko
 // CS 303 Project 1
