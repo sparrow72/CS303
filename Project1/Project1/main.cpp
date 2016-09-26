@@ -20,9 +20,9 @@ void main()
 {
     mainMenu(); //Allow for input from user
 
-    string answer;
-    bool loop = true;
-    locale loc;
+    string answer; //User input variable
+    bool loop = true; //Set loop to start
+    locale loc; //Using locale file
 
     do { //Ask to restart the menu
         cout << "\n\nDo you wish to try again? (Y/N): "; //
@@ -253,7 +253,6 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
         ++iter2; //Increment
     }
 
-	
 	/*for (list<Term>::iterator iter3 = third.begin(); iter3 != third.end(); ++iter3)
 	{
 		for (list<Term>::iterator iter4 = third.begin(); iter4 != third.end(); ++iter4)
@@ -269,7 +268,6 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 		}
 	}*/
     printList(third); //Output the final answer
-
 }
 
 void printList(list<Term>& poly)
@@ -287,6 +285,5 @@ void printList(list<Term>& poly)
 
         cout << *iter; //Output the value at the interator
     }
-
     cout << '\n'; //Newline
 }
