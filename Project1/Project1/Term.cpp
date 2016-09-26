@@ -139,5 +139,3 @@ ostream& operator<<(ostream& out, Term& item)
 	//Output the x and carrot symbol
 	return out; //Return the polynomial
 }
-
-

@@ -66,26 +66,26 @@ void mainMenu()
         switch (tolower(answer[i], loc))//will work even if the user enters something other than a char
         { //Puts the character to a lower format
         case 'a': //Entering the first polynomial
-            fillList(lis[0]);
+            fillList(lis[0]); //Fill in the poly for list 1
             break;
         case 'b': //Entering the second polynomial
-            fillList(lis[1]);
+            fillList(lis[1]); //Fill in the poly for list 2
             break;
         case 'c': //Adds the polynomials
-            addPoly(lis[0], lis[1], lis[2]);
-            lis[0].clear();
-            lis[1].clear();
-            lis[2].clear();
-            loop = false;
+            addPoly(lis[0], lis[1], lis[2]); //Add the first two lists and save into list 3
+            lis[0].clear(); //Empty list 1
+            lis[1].clear(); //Empty list 2
+            lis[2].clear(); //Empty list 3
+            loop = false; //End the loop
             break;
         case 'd': //Reset the values
-            loop = false;
+            loop = false; //End the loop
             break;
         default: //Bad input
             cout << "Invalid optoin, please try agian\n\n";
             break;
         }
-    } while (loop);
+    } while (loop); //Do while the loop is true
 }
 
 void fillList(list <Term> &lis)
