@@ -53,7 +53,7 @@ void mainMenu() {
 	bool loop = true;
 	locale loc;
 	string answer;
-	list<Term>lis[2];
+	list<Term>lis[3];
 
 	do { //Start the menu options
 		cout << "\n Main Menu:\n";
@@ -226,7 +226,8 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 	list<Term>::iterator iter = first.begin(); //Create an itr
 	list<Term>::iterator iter2 = sec.begin(); //Create a second itr
 
-	while (iter != first.end() || iter2 != sec.end())
+	third.emplace_front(*iter);
+	while (iter != first.end())
 	{ //Go until reaching the end
 		if (*iter == *iter2) //Compare if itr values are equal
 		{
@@ -234,11 +235,9 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 			third.push_back(temp); //At the temp to the final answer
 		}
 		else
-		{ 
-			temp = *iter;
-			third.push_back(temp); //Add to the final term
-			temp2 = *iter2;
-			third.push_back(temp2); //Add to the final term
+		{
+			third.push_back(*iter); //Add to the final term
+			third.push_back(*iter2); //Add to the final term
 		}
 		++iter; //Increment
 		++iter2; //Increment
@@ -249,11 +248,15 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 
 void printList(list<Term>& poly)
 {
-	poly.sort(compare);		
+	//poly.sort(compare);		
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
 	{
-		if (iter==poly.begin())
-		(*iter).setIsfirst(true);
+		if (iter == poly.begin())
+			(*iter).setIsfirst(true);
+		else if (iter != poly.begin())
+		{
+			(*iter).setIsfirst(false);
+		}
 
 		cout << *iter; //Output the value at the interator
 	}
