@@ -168,6 +168,7 @@ void fillList(list <Term> &lis)
                     exp = stoi(strNum); //Save the exponent
                     strNum.clear();
                     temp.setExponent(-exp); //Save as a negative exp
+                    --i;
                 }
                 else if (str[i] == '+')
                 {
@@ -180,6 +181,7 @@ void fillList(list <Term> &lis)
                     exp = stoi(strNum); //Save the Exp
                     strNum.clear();
                     temp.setExponent(exp); //Save the pos exp to the class obj
+                    --i;
                 }
                 else if (isdigit(str[i]))
                 {
@@ -191,6 +193,7 @@ void fillList(list <Term> &lis)
                     exp = stoi(strNum); //Save the Exp
                     strNum.clear();
                     temp.setExponent(exp); //Save the pos exp to the class obj
+                    --i;
                 }
             }
             else
