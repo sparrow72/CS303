@@ -249,20 +249,24 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
         third.push_back(*iter2); //Add to the final term
         ++iter2; //Increment
     }
-	/*for (list<Term>::iterator iter3 = third.begin(); iter3 != third.end(); ++iter3)
+	for (list<Term>::iterator iter3 = third.begin(); iter3 != third.end(); ++iter3)
 	{
 		for (list<Term>::iterator iter4 = third.begin(); iter4 != third.end(); ++iter4)
 		{
 			if (*iter3 == *iter4) //Compare if itr values are equal
 			{
 				temp = *iter3 + *iter4; //Set a value of the values combined
-                third.push_back(temp); //At the temp to the final answer
-                third.remove(*iter3);
-				third.remove(*iter4);
-				
+				third.push_back(temp); //At the temp to the final answer
+				if (*iter3 != *iter4)
+				{
+					third.remove(*iter3);
+					third.remove(*iter4);
+				}
+				else
+					third.remove(*iter3);
 			}
 		}
-	}*/
+	}
     printList(third); //Output the final answer
 }
 
