@@ -75,7 +75,10 @@ ostream& operator<<(ostream& out, Term& item)
 	else if (item.coefficient < 0) //Coeff is negative
 		out << "-"; //Insert a minus sign
 
+	if (item.exponent!=0)
 	out << item.coefficient << "x^" << item.exponent << "\n";
+	else
+		out << item.coefficient << "\n";
 	//Output the x and carrot symbol
 	return out; //Return the polynomial
 }
