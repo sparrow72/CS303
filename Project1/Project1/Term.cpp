@@ -74,7 +74,7 @@ bool operator==(const Term & lhs, const Term & rhs)
 
 bool operator!=(const Term & lhs, const Term & rhs)
 {
-	if (lhs.getExponent() != rhs.getExponent())
+	if ((lhs.getExponent() != rhs.getExponent()) && (lhs.getCoefficient() != rhs.getCoefficient()))
 	{ //Left side is the same as right side
 		return true;
 	}

@@ -221,15 +221,14 @@ bool compare(const Term &first, const Term &second)
 
 void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 {
-    first.sort(); //Sort the list and compare
-    first.reverse();
-    sec.sort();
-    sec.reverse();
-    Term temp, temp2;
+    first.sort(); //Sort the list
+    first.reverse(); //Put the highest term in front
+    sec.sort(); //Sort the list
+    sec.reverse(); //Put the highest term in front
+    Term temp, temp2; //Create to temporary terms objects
     list<Term>::iterator iter = first.begin(); //Create an itr
     list<Term>::iterator iter2 = sec.begin(); //Create a second itr
 
-    //third.emplace_front(*iter);
     while (iter != first.end())
     { //Go until reaching the end
         if (*iter == *iter2) //Compare if itr values are equal
@@ -247,12 +246,9 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
     }
     while (iter2 != sec.end())
     { //Go until reaching the end
-        //changes
         third.push_back(*iter2); //Add to the final term
-
         ++iter2; //Increment
     }
-
 	/*for (list<Term>::iterator iter3 = third.begin(); iter3 != third.end(); ++iter3)
 	{
 		for (list<Term>::iterator iter4 = third.begin(); iter4 != third.end(); ++iter4)
@@ -272,15 +268,15 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 
 void printList(list<Term>& poly)
 {
-    poly.sort();
-    poly.reverse();
+    poly.sort(); //Sort the list
+    poly.reverse(); //Put the largest term in front
     for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
-    {
-        if (iter == poly.begin())
-            (*iter).setIsfirst(true);
-        else if (iter != poly.begin())
+    { //Set the iterator to front and begin parsing through
+        if (iter == poly.begin()) //If the iterator is at the start
+            (*iter).setIsfirst(true); //Set the first term to true
+        else if (iter != poly.begin()) //If the iter is not at the start
         {
-            (*iter).setIsfirst(false);
+            (*iter).setIsfirst(false); //
         }
 
         cout << *iter; //Output the value at the interator
