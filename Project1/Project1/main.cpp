@@ -220,8 +220,10 @@ bool compare(const Term &first, const Term &second)
 void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 {
 
-	//first.sort(compare); //Sort the list and compare
-	//sec.sort(compare);
+	first.sort(); //Sort the list and compare
+    first.reverse();
+	sec.sort();
+    sec.reverse();
 	Term temp, temp2;
 	list<Term>::iterator iter = first.begin(); //Create an itr
 	list<Term>::iterator iter2 = sec.begin(); //Create a second itr
@@ -248,7 +250,8 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 
 void printList(list<Term>& poly)
 {
-	//poly.sort(compare);		
+    poly.sort();
+    poly.reverse();
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
 	{
 		if (iter == poly.begin())
