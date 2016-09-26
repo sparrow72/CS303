@@ -168,6 +168,7 @@ void fillList(list <Term> &lis)
                     exp = stoi(strNum); //Save the exponent
                     strNum.clear();
                     temp.setExponent(-exp); //Save as a negative exp
+					--i;
                 }
                 else if (str[i] == '+')
                 {
@@ -180,6 +181,7 @@ void fillList(list <Term> &lis)
                     exp = stoi(strNum); //Save the Exp
                     strNum.clear();
                     temp.setExponent(exp); //Save the pos exp to the class obj
+					--i;
                 }
                 else if (isdigit(str[i]))
                 {
@@ -191,6 +193,7 @@ void fillList(list <Term> &lis)
                     exp = stoi(strNum); //Save the Exp
                     strNum.clear();
                     temp.setExponent(exp); //Save the pos exp to the class obj
+					--i;
                 }
             }
             else
@@ -252,6 +255,25 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 
         ++iter2; //Increment
     }
+
+	
+	for (list<Term>::iterator iter3 = third.begin(); iter != third.end(); ++iter)
+	{
+		for (list<Term>::iterator iter4 = third.begin(); iter != third.end(); ++iter)
+		{
+			if (*iter3 == *iter4) //Compare if itr values are equal
+			{
+				temp = *iter3 + *iter4; //Set a value of the values combined
+				third.remove(*iter3);
+				third.remove(*iter4);
+				third.push_back(temp); //At the temp to the final answer
+				
+			}
+		}
+		
+
+		cout << *iter; //Output the value at the interator
+	}
     printList(third); //Output the final answer
 
 }
