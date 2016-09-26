@@ -100,8 +100,6 @@ void fillList(list <Term> &lis)
 	cout << "please enter the polynomial: ";
 	cin >> str;
 
-	while (!str.empty())
-	{
 		for (int i = 0; i < str.length(); i++)
 		{
 			strNum = "0";
@@ -177,7 +175,6 @@ void fillList(list <Term> &lis)
 							++i;
 						}
 						exp = stoi(strNum); //Save the Exp
-						//exp = strNum;
 						strNum.clear();
 						temp.setExponent(exp); //Save the pos exp to the class obj
 					}
@@ -188,13 +185,9 @@ void fillList(list <Term> &lis)
 					temp.setExponent(1);
 				}
 			}
-
 			lis.push_back(temp);
 			//destructor for temp
 		}
-
-	}
-
 }
 
 bool compare(const Term& first, const Term& second)
