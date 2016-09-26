@@ -247,7 +247,7 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
     }
     while (iter2 != sec.end())
     { //Go until reaching the end
-
+        //changes
         third.push_back(*iter2); //Add to the final term
 
         ++iter2; //Increment
