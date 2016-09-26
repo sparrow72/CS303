@@ -28,7 +28,7 @@ void Term::setExponent(int new_exponent)
 }
 
 void Term::setIsfirst(bool first)
-{
+{ //Marks the term as the first item in the polynomial
 	isfirst = first;
 }
 
@@ -83,48 +83,48 @@ Term operator+(const Term& lhs, const Term& rhs)
 Term& Term::operator=(const Term& rhs)
 {
 	if (this == &rhs)
-	{
+	{ //If this Term is itself return itself
 		return *this;
 	}
 
-	coefficient = rhs.coefficient;
-	exponent = rhs.exponent;
+	coefficient = rhs.coefficient; //Coeff is now the coeff of rhs
+	exponent = rhs.exponent; //Exp is now the exp of rhs
 	return *this;
 } // implements the rhs
 
 ostream& operator<<(ostream& out, Term& item)
 {
-	if (item.coefficient == 0) //Coeff is 0
+	if (item.coefficient == 0) //If Coeff is 0
 	{
 		out << "0"; //Insert a 0
-		return out;
+		return out; //Output the 0
 	}
 
 	if (!item.isfirst)
-	{
+	{ //If this is not the first term in the list
 		if (item.coefficient > 0) //Coeff is not negative
 			out << " + "; //Insert a plus sign
 
 		else if (item.coefficient < 0) //Coeff is negative
 		{
 			out << " - "; //Insert a minus sign
-			if (item.exponent == 0)
-				out << abs(item.coefficient);
-			else if (item.exponent == 1)
-				out << abs(item.coefficient) << "x";
-			else
+			if (item.exponent == 0) //If the exponent is 0
+				out << abs(item.coefficient); //Output the absolute value of the coeff
+			else if (item.exponent == 1) //If the exponent is 1
+				out << abs(item.coefficient) << "x"; //Output only an x
+			else //If the exponenet is greater than 1
 				out << abs(item.coefficient) << "x^" << item.exponent;
 			//Output the x and carrot symbol
 			return out; //Return the polynomial
 		}
 
 	}
-
-	if (item.exponent == 0)
-		out << item.coefficient;
-	else if (item.exponent == 1)
-		out << item.coefficient << "x";
-	else
+    //Term is the first term
+	if (item.exponent == 0) //If the exponent is 0
+		out << item.coefficient; //Output only the coeff
+	else if (item.exponent == 1) //If the exp is 1
+		out << item.coefficient << "x"; //Output an x
+	else //Exp is greater than 1
 		out << item.coefficient << "x^" << item.exponent;
 	//Output the x and carrot symbol
 	return out; //Return the polynomial

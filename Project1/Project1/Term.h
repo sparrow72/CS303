@@ -29,7 +29,7 @@ public:
     //Overloaded the equality operator
 	friend bool operator == (const Term &lhs, const Term &rhs);
 
-	//Overloaded the equality operator
+	//Overloaded the equals operator
 	Term& Term::operator=(const Term& rhs);
 
     //Overloaded the plus operator
