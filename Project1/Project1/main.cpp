@@ -3,31 +3,29 @@
 // Fall 2016
 // Prof. Mohammad Kuhail
 
-#include <iostream>
-#include <string>
-#include <list>
-#include <iomanip>
-#include <locale>
-#include "Term.h"
-using namespace std;
+#include <iostream> //Allows for in and output
+#include <string> //Allows for use of strings
+#include <list> //Allows for use of lists
+#include <locale> //Menu functionality
+#include "Term.h" //Include the Term Class
+using namespace std; //Use the C++ standard namespace
 
-void mainMenu(); //Function definitions
-void fillList(list <Term> &lis);
-void printList(list <Term> &lis);
-void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third);
-bool compare(const Term &first, const Term &second);
+void mainMenu(); //Function Declerations
+void fillList(list <Term> &lis); //Function Declerations
+void printList(list <Term> &lis); //Function Declerations
+void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third); //Function Declerations
+bool compare(const Term &first, const Term &second); //Function Declerations
 
 void main()
 {
-
     mainMenu(); //Allow for input from user
 
     string answer;
     bool loop = true;
     locale loc;
 
-    do {
-        cout << "\n\nDo you wish to try again? (Y/N): ";
+    do { //Ask to restart the menu
+        cout << "\n\nDo you wish to try again? (Y/N): "; //
         cin >> answer; //Entering if they want to go again
         string::size_type i = 0;
         switch (tolower(answer[i], loc))//will work even if the user enters something other than a char
@@ -105,7 +103,7 @@ void fillList(list <Term> &lis)
         exp = 0; coeff = 0;
         temp.setCoefficient(0);
         temp.setExponent(0);
-        // this code block will input the coefficient
+        
         if (str[i] == '-')
         {
             ++i;
@@ -118,6 +116,7 @@ void fillList(list <Term> &lis)
             strNum.clear();
             temp.setCoefficient(-coeff); //Set the Negative Coeff
         }
+
         else if (str[i] == '+')
         {
             ++i;
@@ -130,6 +129,7 @@ void fillList(list <Term> &lis)
             strNum.clear();
             temp.setCoefficient(coeff); //Save the coeff to class obj
         }
+
         else if (isdigit(str[i]))
         {
             while (isdigit(str[i]))
@@ -141,6 +141,7 @@ void fillList(list <Term> &lis)
             strNum.clear();
             temp.setCoefficient(coeff); //Save the coeff to class obj
         }
+
         else
         {
             //the user entered x with an assumed coefficient of 1
@@ -148,14 +149,11 @@ void fillList(list <Term> &lis)
             temp.setCoefficient(coeff);
         }
 
-        //this code block will input the exponent
-        if (tolower(str[i]) == 'x')
+        if (tolower(str[i]) == 'x') 
         {
-            //'skip' do not input
             ++i;
             if (str[i] == '^')
             {
-                //'skip' do not input
                 ++i;
                 if (str[i] == '-')
                 {
@@ -196,6 +194,7 @@ void fillList(list <Term> &lis)
                     --i;
                 }
             }
+
             else
             {
                 //the user entered x with an assumed exponent of 1
@@ -212,7 +211,6 @@ void fillList(list <Term> &lis)
 
 bool compare(const Term &first, const Term &second)
 {
-
     if (first < second) //Compare the terms first poly to second
         return true;
     else if (first > second) //Compare second term to first
@@ -223,7 +221,6 @@ bool compare(const Term &first, const Term &second)
 
 void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 {
-
     first.sort(); //Sort the list and compare
     first.reverse();
     sec.sort();
@@ -257,23 +254,20 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
     }
 
 	
-	for (list<Term>::iterator iter3 = third.begin(); iter != third.end(); ++iter)
+	/*for (list<Term>::iterator iter3 = third.begin(); iter3 != third.end(); ++iter3)
 	{
-		for (list<Term>::iterator iter4 = third.begin(); iter != third.end(); ++iter)
+		for (list<Term>::iterator iter4 = third.begin(); iter4 != third.end(); ++iter4)
 		{
 			if (*iter3 == *iter4) //Compare if itr values are equal
 			{
 				temp = *iter3 + *iter4; //Set a value of the values combined
-				third.remove(*iter3);
+                third.push_back(temp); //At the temp to the final answer
+                third.remove(*iter3);
 				third.remove(*iter4);
-				third.push_back(temp); //At the temp to the final answer
 				
 			}
 		}
-		
-
-		cout << *iter; //Output the value at the interator
-	}
+	}*/
     printList(third); //Output the final answer
 
 }
