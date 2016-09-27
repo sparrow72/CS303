@@ -11,8 +11,6 @@ using namespace std; //Set namespace for the entire implementation
 class Term {
 public:
 	Term(int new_coefficient=1, int new_exponent = 1); //Example can be found in List Header on BBoard
-	Term(const Term &data) { exponent = data.getExponent(); coefficient = data.getCoefficient(); }
-    //Default constructor 
 	~Term(); //Destructor
 	
     void setCoefficient(int new_coefficient = 1); //Setter the Coeff w/1 default

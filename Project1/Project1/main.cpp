@@ -15,6 +15,7 @@ void fillList(list <Term> &lis); //Function Declerations
 void printList(list <Term> &lis); //Function Declerations
 void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third); //Function Declerations
 bool compare(const Term &first, const Term &second); //Function Declerations
+void reduce(list<Term>& poly);
 
 void main()
 {
@@ -95,8 +96,6 @@ void fillList(list <Term> &lis)
 	int exp, coeff;
 	cout << "please enter the polynomial: ";
 	cin >> str; //User input for the string
-	temp.setCoefficient(0);
-	temp.setExponent(0);
 	for (int i = 0; i < str.length(); i++)
 	{
 		strNum = "0";
@@ -205,7 +204,7 @@ void fillList(list <Term> &lis)
 		}
 		lis.push_back(temp);
 	}
-	///TEST OUTPUT AND SORT... DEL BEFORE WE SUBMIT
+	reduce(lis);
 	printList(lis); //Output the final answer
 }
 
@@ -251,54 +250,66 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 	}
 
 
-	third.sort(); //Sort the list
-	third.reverse(); //Put the largest term in front
-	list<Term>::iterator iter3 = third.begin(); //Create an itr
-	list<Term>::iterator iter4 = third.begin(); //Create an itr
-	if (third.size() > 2)
-	{
-		++iter4;
-		while ((iter3 != third.end()) && (iter4 != third.end()))
+	reduce(third);
+	printList(third); //Output the final answer
+}
+
+void reduce(list<Term>& poly)
+{
+	///reduces the poly polynomial
+	poly.sort(); //Sort the list
+	poly.reverse(); //Put the largest term in front
+	Term temp; //Create to temporary terms objects
+	list<Term>::iterator iter3 = poly.begin(); //Create an itr
+	list<Term>::iterator iter4 = poly.begin(); //Create an itr
+	if (poly.size() > 2)
+	{//if the list is larger than 2
+		++iter4; //increment
+		while ((iter3 != poly.end()) && (iter4 != poly.end()))
 		{ //Go until reaching the end
 			if ((*iter3 == *iter4)) //Compare if itr exponents are equal
 			{
 				temp = *iter3 + *iter4; //Set a value of the values combined
-				third.push_back(temp); //At the temp to the final answer
-				iter4 = third.erase(iter4); //remove iter4
-				iter3 = third.erase(iter3); //remove iter3
+				poly.push_back(temp); //At the temp to the final answer
+				iter4 = poly.erase(iter4); //remove iter4
+				iter3 = poly.erase(iter3); //remove iter3
 			}
 			++iter4; //Increment
 			++iter3; //Increment
 		}
 	}
-	else if (third.size() == 2)
-	{
+	else if (poly.size() == 2)
+	{//if the list is 2
 		++iter4; //Increment
 		if ((*iter3 == *iter4)) //Compare if itr exponents are equal
 		{
 			temp = *iter3 + *iter4; //Set a value of the values combined
-			third.push_back(temp); //At the temp to the final answer
-			iter4 = third.erase(iter4); //remove iter4
-			iter3 = third.erase(iter3); //remove iter3
+			poly.push_back(temp); //At the temp to the final answer
+			iter4 = poly.erase(iter4); //remove iter4
+			iter3 = poly.erase(iter3); //remove iter3
 		}
 	}
-	printList(third); //Output the final answer
-}
 
+}
 void printList(list<Term>& poly)
 {
 	poly.sort(); //Sort the list
 	poly.reverse(); //Put the largest term in front
+
 	for (list<Term>::iterator iter = poly.begin(); iter != poly.end(); iter++)
 	{ //Set the iterator to front and begin parsing through
 		if (iter == poly.begin()) //If the iterator is at the start
 			(*iter).setIsfirst(true); //Set the first term to true
 		else if (iter != poly.begin()) //If the iter is not at the start
-		{
 			(*iter).setIsfirst(false); //
-		}
 
-		cout << *iter; //Output the value at the interator
+		if ((*iter).getCoefficient() != 0)
+			cout << *iter; //Output the value at the interator
+		else if ((*iter).getCoefficient() == 0 && poly.size() == 1)
+		{
+			cout << *iter; //Output the value at the interator
+			return;
+		}
 	}
 	cout << '\n'; //Newline
 }
