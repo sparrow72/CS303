@@ -337,11 +337,14 @@ void printList(list<Term>& poly)
 
 		if ((*iter).getCoefficient() != 0)
 			cout << *iter; //Output the value at the interator
-		else if ((*iter).getCoefficient() == 0 && poly.size() == 1)
-		{
-			cout << *iter; //Output the value at the interator
-			return;
-		}
+        else if ((*iter).getCoefficient() == 0 && poly.size() == 1)
+        {
+            cout << *iter; //Output the value at the interator
+            return;
+        }
+        else if ((*iter).getExponent() > 0) {
+            cout << *iter;
+        }
 	}
 	cout << '\n'; //Newline
 }

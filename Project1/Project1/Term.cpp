@@ -104,11 +104,7 @@ Term& Term::operator=(const Term& rhs)
 
 ostream& operator<<(ostream& out, Term& item)
 {
-	if (item.coefficient == 0) //If Coeff is 0
-	{
-		out << "0"; //Insert a 0
-		return out; //Output the 0
-	}
+
 
 	if (!item.isfirst)
 	{ //If this is not the first term in the list
@@ -130,12 +126,22 @@ ostream& operator<<(ostream& out, Term& item)
 
 	}
     //Term is the first term
-	if (item.exponent == 0) //If the exponent is 0
-		out << item.coefficient; //Output only the coeff
-	else if (item.exponent == 1) //If the exp is 1
-		out << item.coefficient << "x"; //Output an x
+    if (item.exponent == 0) //If the exponent is 0
+        out << item.coefficient; //Output only the coeff
+    else if (item.exponent == 1 && item.isfirst == false && item.coefficient == 0)
+        out << " + " << "x";
+    else if (item.exponent == 1) //If the exp is 1
+        out << item.coefficient << "x"; //Output an x
+    else if (item.exponent > 1 && item.coefficient == 0)
+        out << "x^" << item.exponent;
 	else //Exp is greater than 1
 		out << item.coefficient << "x^" << item.exponent;
 	//Output the x and carrot symbol
+    if (item.coefficient == 0 && item.exponent == 0) //If Coeff is 0
+    {
+        out << "0"; //Insert a 0
+        return out; //Output the 0
+    }
 	return out; //Return the polynomial
+
 }
