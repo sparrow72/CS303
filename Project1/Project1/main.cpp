@@ -68,9 +68,11 @@ void mainMenu()
 		switch (tolower(answer[i], loc))//will work even if the user enters something other than a char
 		{ //Puts the character to a lower format
 		case 'a': //Entering the first polynomial
+            lis[0].clear();
 			fillList(lis[0]); //Fill in the poly for list 1
 			break;
 		case 'b': //Entering the second polynomial
+            lis[1].clear();
 			fillList(lis[1]); //Fill in the poly for list 2
 			break;
 		case 'c': //Adds the polynomials
