@@ -266,10 +266,10 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 			++iter; //Increment
 			++iter2; //Increment
 		}
-		while (iter2 != first.end())
+		while (iter != first.end())
 		{ //Go until reaching the end
-			third.push_back(*iter2); //Add to the final term
-			++iter2; //Increment
+			third.push_back(*iter); //Add to the final term
+			++iter; //Increment
 		}
 	}
 
