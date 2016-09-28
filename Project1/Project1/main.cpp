@@ -249,7 +249,7 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 	}
 	else if (sec.size() <= first.size())
 	{//correctly adds them if the first is larger than the sec
-		while (iter != sec.end())
+		while (iter2 != sec.end())
 		{ //Go until reaching the end
 			if (*iter == *iter2) //Compare if itr values are equal
 			{
