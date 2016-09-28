@@ -7,6 +7,7 @@
 #include <string> //Allows for use of strings
 #include <list> //Allows for use of lists
 #include <locale> //Menu functionality
+#include <iterator> // next
 #include "Term.h" //Include the Term Class
 using namespace std; //Use the C++ standard namespace
 
@@ -15,7 +16,7 @@ void fillList(list <Term> &lis); //Function Declerations
 void printList(list <Term> &lis); //Function Declerations
 void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third); //Function Declerations
 bool compare(const Term &first, const Term &second); //Function Declerations
-void reduce(list<Term>& poly);
+void reduce(list<Term>& poly);//reduces the poly polynomial
 
 void main()
 {
@@ -93,10 +94,10 @@ void fillList(list <Term> &lis)
 {
 	Term temp; //Temp term holder
 	string str, strNum; //Strings to hold the values
-	int exp, coeff;
+	int exp, coeff, i = 0;
 	cout << "please enter the polynomial: ";
 	cin >> str; //User input for the string
-	for (int i = 0; i < str.length(); i++)
+	while (i < str.length())
 	{
 		strNum = "0";
 		exp = 0; coeff = 0;
@@ -165,7 +166,6 @@ void fillList(list <Term> &lis)
 					exp = stoi(strNum); //Save the exponent
 					strNum.clear();
 					temp.setExponent(-exp); //Save as a negative exp
-					--i;
 				}
 				else if (str[i] == '+')
 				{
@@ -178,7 +178,6 @@ void fillList(list <Term> &lis)
 					exp = stoi(strNum); //Save the Exp
 					strNum.clear();
 					temp.setExponent(exp); //Save the pos exp to the class obj
-					--i;
 				}
 				else if (isdigit(str[i]))
 				{
@@ -190,7 +189,6 @@ void fillList(list <Term> &lis)
 					exp = stoi(strNum); //Save the Exp
 					strNum.clear();
 					temp.setExponent(exp); //Save the pos exp to the class obj
-					--i;
 				}
 			}
 
@@ -199,7 +197,6 @@ void fillList(list <Term> &lis)
 				//the user entered x with an assumed exponent of 1
 				exp = 1;
 				temp.setExponent(exp);
-				--i;
 			}
 		}
 		lis.push_back(temp);
@@ -227,26 +224,51 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 	Term temp; //Create to temporary terms objects
 	list<Term>::iterator iter = first.begin(); //Create an itr
 	list<Term>::iterator iter2 = sec.begin(); //Create a second itr
-
-	while (iter != first.end())
-	{ //Go until reaching the end
-		if (*iter == *iter2) //Compare if itr values are equal
-		{
-			temp = *iter + *iter2; //Set a value of the values combined
-			third.push_back(temp); //At the temp to the final answer
+	if (sec.size() >= first.size())
+	{//correctly adds them if the sec is larger than the first
+		while (iter != first.end())
+		{ //Go until reaching the end
+			if (*iter == *iter2) //Compare if itr values are equal
+			{
+				temp = *iter + *iter2; //Set a value of the values combined
+				third.push_back(temp); //At the temp to the final answer
+			}
+			else
+			{
+				third.push_back(*iter); //Add to the final term
+				third.push_back(*iter2); //Add to the final term
+			}
+			++iter; //Increment
+			++iter2; //Increment
 		}
-		else
-		{
-			third.push_back(*iter); //Add to the final term
+		while (iter2 != sec.end())
+		{ //Go until reaching the end
 			third.push_back(*iter2); //Add to the final term
+			++iter2; //Increment
 		}
-		++iter; //Increment
-		++iter2; //Increment
 	}
-	while (iter2 != sec.end())
-	{ //Go until reaching the end
-		third.push_back(*iter2); //Add to the final term
-		++iter2; //Increment
+	else if (sec.size() <= first.size())
+	{//correctly adds them if the first is larger than the sec
+		while (iter != sec.end())
+		{ //Go until reaching the end
+			if (*iter == *iter2) //Compare if itr values are equal
+			{
+				temp = *iter + *iter2; //Set a value of the values combined
+				third.push_back(temp); //At the temp to the final answer
+			}
+			else
+			{
+				third.push_back(*iter); //Add to the final term
+				third.push_back(*iter2); //Add to the final term
+			}
+			++iter; //Increment
+			++iter2; //Increment
+		}
+		while (iter2 != first.end())
+		{ //Go until reaching the end
+			third.push_back(*iter2); //Add to the final term
+			++iter2; //Increment
+		}
 	}
 
 
@@ -261,36 +283,48 @@ void reduce(list<Term>& poly)
 	poly.reverse(); //Put the largest term in front
 	Term temp; //Create to temporary terms objects
 	list<Term>::iterator iter3 = poly.begin(); //Create an itr
-	list<Term>::iterator iter4 = poly.begin(); //Create an itr
+	list<Term>::iterator iter4 = next(iter3, 1); //Create an itr
 	if (poly.size() > 2)
 	{//if the list is larger than 2
-		++iter4; //increment
-		while ((iter3 != poly.end()) && (iter4 != poly.end()))
+		while (iter3 != poly.end())
 		{ //Go until reaching the end
-			if ((*iter3 == *iter4)) //Compare if itr exponents are equal
+			if (*iter3 == *iter4) //Compare if itr exponents are equal
 			{
 				temp = *iter3 + *iter4; //Set a value of the values combined
 				poly.push_back(temp); //At the temp to the final answer
-				iter4 = poly.erase(iter4); //remove iter4
-				iter3 = poly.erase(iter3); //remove iter3
+				iter3++; //Increment
+				iter3++; //Increment
+				poly.pop_front(); //remove front
+				poly.pop_front(); //remove front
+				if (next(iter3, 1) != poly.end())
+					iter4 = next(iter3, 1);
+				else
+					return;
 			}
-			++iter4; //Increment
-			++iter3; //Increment
+			else
+			{
+				iter3++; //Increment
+				if (next(iter3, 1) != poly.end())
+					iter4 = next(iter3, 1);
+				else
+					return;
+			}
+
 		}
 	}
 	else if (poly.size() == 2)
 	{//if the list is 2
-		++iter4; //Increment
 		if ((*iter3 == *iter4)) //Compare if itr exponents are equal
 		{
 			temp = *iter3 + *iter4; //Set a value of the values combined
 			poly.push_back(temp); //At the temp to the final answer
-			iter4 = poly.erase(iter4); //remove iter4
-			iter3 = poly.erase(iter3); //remove iter3
+			poly.pop_front(); //remove front
+			poly.pop_front(); //remove front
 		}
 	}
 
 }
+
 void printList(list<Term>& poly)
 {
 	poly.sort(); //Sort the list
