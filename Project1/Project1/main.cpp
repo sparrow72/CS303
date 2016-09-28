@@ -273,58 +273,54 @@ void addPoly(list<Term> &first, list<Term> &sec, list<Term> &third)
 		}
 	}
 
-
 	reduce(third);
 	printList(third); //Output the final answer
 }
 
 void reduce(list<Term>& poly)
 {
-	///reduces the poly polynomial
-	poly.sort(); //Sort the list
-	poly.reverse(); //Put the largest term in front
-	Term temp; //Create to temporary terms objects
-	list<Term>::iterator iter3 = poly.begin(); //Create an itr
-	list<Term>::iterator iter4 = next(iter3, 1); //Create an itr
-	if (poly.size() > 2)
-	{//if the list is larger than 2
-		while (iter3 != poly.end())
-		{ //Go until reaching the end
-			if (*iter3 == *iter4) //Compare if itr exponents are equal
-			{
-				temp = *iter3 + *iter4; //Set a value of the values combined
-				poly.push_back(temp); //At the temp to the final answer
-				iter3++; //Increment
-				iter3++; //Increment
-				poly.pop_front(); //remove front
-				poly.pop_front(); //remove front
-				if (next(iter3, 1) != poly.end())
-					iter4 = next(iter3, 1);
-				else
-					return;
-			}
-			else
-			{
-				iter3++; //Increment
-				if (next(iter3, 1) != poly.end())
-					iter4 = next(iter3, 1);
-				else
-					return;
-			}
+    ///reduces the poly polynomial
+    poly.sort(); //Sort the list
+    poly.reverse(); //Put the largest term in front
+    Term temp; //Create to temporary terms objects
+    list<Term>::iterator iter3 = poly.begin(); //Create an itr
+    list<Term>::iterator iter4 = next(iter3, 1); //Create an itr
+    if (poly.size() > 2)
+    {//if the list is larger than 2
+        while (iter3 != poly.end())
+        { //Go until reaching the end
+            if (*iter3 == *iter4) //Compare if itr exponents are equal
+            {
+                temp = *iter3 + *iter4; //Set a value of the values combined
+                poly.push_back(temp); //At the temp to the final answer
+                iter3 = poly.erase(iter3);
+                iter3 = poly.erase(iter3);
+                if (next(iter3, 1) != poly.end())
+                    iter4 = next(iter3, 1);
+                else
+                    return;
+            }
+            else
+            {
+                iter3++; //Increment
+                if (next(iter3, 1) != poly.end())
+                    iter4 = next(iter3, 1);
+                else
+                    return;
+            }
 
-		}
-	}
-	else if (poly.size() == 2)
-	{//if the list is 2
-		if ((*iter3 == *iter4)) //Compare if itr exponents are equal
-		{
-			temp = *iter3 + *iter4; //Set a value of the values combined
-			poly.push_back(temp); //At the temp to the final answer
-			poly.pop_front(); //remove front
-			poly.pop_front(); //remove front
-		}
-	}
-
+        }
+    }
+    else if (poly.size() == 2)
+    {//if the list is 2
+        if ((*iter3 == *iter4)) //Compare if itr exponents are equal
+        {
+            temp = *iter3 + *iter4; //Set a value of the values combined
+            poly.push_back(temp); //At the temp to the final answer
+            iter3 = poly.erase(iter3);
+            iter3 = poly.erase(iter3);
+        }
+    }
 }
 
 void printList(list<Term>& poly)
