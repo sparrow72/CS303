@@ -15,15 +15,28 @@ using namespace std;
 #ifndef _User
 #define _User
 
-
 class User
 {
 public:
-	~User();
+	~User()
+	{
+
+	}
+
+	User(double uT = 0, int uF = 0, int dF = 0, string dir = "")
+	{
+		uTime = uT;
+		uFloor = uF;
+		dFloor = dF;
+		uDir = dir;
+		atDest = false;
+	}
 
 private:
-
-
+	double uTime, exitTime;
+	int uFloor, dFloor;
+	string uDir;
+	bool atDest;
 protected:
 
 };

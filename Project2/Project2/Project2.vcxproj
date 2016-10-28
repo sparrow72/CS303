@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5C007DF9-E27F-409F-9DB4-3DCF8C138731}</ProjectGuid>
+    <ProjectGuid>{3A4C2859-8BF1-4AF5-838B-971C5316D1F2}</ProjectGuid>
     <RootNamespace>Project2</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -110,17 +110,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Fall %2716\303\Project2\Project2\ExternalRequests.cpp" />
-    <ClCompile Include="..\..\..\..\Fall %2716\303\Project2\Project2\InternalRequests.cpp" />
-    <ClCompile Include="..\..\..\..\Fall %2716\303\Project2\Project2\Main.cpp" />
-    <ClCompile Include="..\..\..\..\Fall %2716\303\Project2\Project2\Requests.cpp" />
-    <ClCompile Include="..\..\..\..\Fall %2716\303\Project2\Project2\User.cpp" />
+    <ClCompile Include="ExternalRequests.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="InternalRequests.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="Requests.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Fall %2716\303\Project2\Project2\ExternalRequests.h" />
-    <ClInclude Include="..\..\..\..\Fall %2716\303\Project2\Project2\InternalRequests.h" />
-    <ClInclude Include="..\..\..\..\Fall %2716\303\Project2\Project2\Requests.h" />
-    <ClInclude Include="..\..\..\..\Fall %2716\303\Project2\Project2\User.h" />
+    <ClInclude Include="ExternalRequests.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="InternalRequests.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="Requests.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

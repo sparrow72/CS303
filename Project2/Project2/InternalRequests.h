@@ -7,11 +7,13 @@
 #define _InternalRequests
 #include "Requests.h"
 
-class IntReq :public Req
+class InternalRequests :public Requests
 {
 public:
-	~IntReq();
-	void goTo(); //go to next floor in direction of elevator
+	~InternalRequests()
+	{
+
+	}
 
 
 private:

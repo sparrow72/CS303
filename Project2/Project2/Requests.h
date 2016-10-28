@@ -15,20 +15,19 @@ using namespace std;
 #ifndef _Requests
 #define _Requests
 
-
-class Req
+class Requests
 {
 public:
-	~Req();
+	~Requests()
+	{
 
-	bool isUp();
+	}
+
 private:
 
 
 protected:
-	bool dirUp;
-	int currElevFloor;
-	int currUserFloor;
+	string dir;
 
 };
 #endif	
