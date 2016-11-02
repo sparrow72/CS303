@@ -18,30 +18,16 @@ using namespace std;
 class User
 {
 public:
-	~User()
-	{
-
-	}
-
-	User(double uT = 0, int uF = 0, int dF = 0, string dir = "")
-	{
-		uTime = uT;
-		uFloor = uF;
-		dFloor = dF;
-		uDir = dir;
-		atDest = false;
-	}
-	int getDestFloor()
-	{
-
-	}
+    User(double uT = 0, int uF = 0, int dF = 0, string dir = "");
+    int getDestFloor();
+    double getFinalTime();
+    void setFinalTime(double FT);
 
 private:
 	double uTime, exitTime;
 	int uFloor, dFloor;
 	string uDir;
-	bool atDest;
-protected:
+    bool atDest;
 
 };
 #endif	

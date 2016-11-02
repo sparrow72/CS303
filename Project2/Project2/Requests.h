@@ -19,12 +19,7 @@ class Requests
 
 {
 public:
-	~Requests()
-	{
-
-	}
-
-
+    ~Requests();
 
 private:
 

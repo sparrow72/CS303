@@ -6,35 +6,17 @@
 #ifndef _InternalRequests
 #define _InternalRequests
 #include "Requests.h"
+#include <queue>
 
 class InternalRequests 
 {
 public:
-	~InternalRequests()
-	{
-
-	}
-	InternalRequests(int userNum = 0)
-	{
-		line.push(userNum);
-	}
-	string getDir()
-	{
-		return eDir;
-	}
-	void addUser(int userNum)
-	{
-		line.push(userNum);
-
-	}
-	bool hasExitUser()
-	{
-
-	}
-	int removeUser()
-	{
-		
-	}
+    InternalRequests(int userNum = 0);
+    void setDir(string D);
+    string getDir();
+    void addUser(int userNum);
+    bool hasExitUser(); //Check if Queue empty, true if need off, false otherwise
+    int removeUser(); //Return popped item, and remove user from queue
 private:
 	string eDir;
 	queue<int> line;

@@ -11,10 +11,7 @@
 class ExternalRequests 
 {
 public:
-	~ExternalRequests()
-	{
-
-	}
+    ~ExternalRequests();
 	ExternalRequests(int userNum = 0)
 	{
 		line.push(userNum);
