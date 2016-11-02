@@ -31,6 +31,10 @@ public:
 		uDir = dir;
 		atDest = false;
 	}
+	int getDestFloor()
+	{
+
+	}
 
 private:
 	double uTime, exitTime;

@@ -8,7 +8,7 @@
 #include "Requests.h"
 #include <queue>
 
-class ExternalRequests :public Requests
+class ExternalRequests 
 {
 public:
 	~ExternalRequests()
@@ -22,6 +22,19 @@ public:
 	void addUser(int userNum)
 	{
 		line.push(userNum);
+
+	}
+
+	int getUpUser()
+	{
+
+	}
+	bool hasUpUsers()
+	{
+
+	}
+	bool hasDownUsers()
+	{
 
 	}
 

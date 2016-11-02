@@ -7,17 +7,37 @@
 #define _InternalRequests
 #include "Requests.h"
 
-class InternalRequests :public Requests
+class InternalRequests 
 {
 public:
 	~InternalRequests()
 	{
 
 	}
+	InternalRequests(int userNum = 0)
+	{
+		line.push(userNum);
+	}
+	string getDir()
+	{
+		return eDir;
+	}
+	void addUser(int userNum)
+	{
+		line.push(userNum);
 
+	}
+	bool hasExitUser()
+	{
 
+	}
+	int removeUser()
+	{
+		
+	}
 private:
-
+	string eDir;
+	queue<int> line;
 
 };
 #endif	

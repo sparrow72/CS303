@@ -16,12 +16,15 @@ using namespace std;
 #define _Requests
 
 class Requests
+
 {
 public:
 	~Requests()
 	{
 
 	}
+
+
 
 private:
 

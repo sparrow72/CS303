@@ -13,7 +13,7 @@
 #include <map>
 
 using namespace std;
-void extRequests(map<int, User>&, map<int, ExternalRequests>, double&, int&);
+void extRequests(map<int, User>&, map<int, ExternalRequests>&, double&, int&);
 
 int main()
 {
@@ -38,7 +38,8 @@ int main()
 	return 1;
 }
 
-void extRequests(map<int, User>& uMap, map<int, ExternalRequests> extReqMap, double& cTime, int& id)
+void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, double& cTime, int& id)
+///Read in data, insert to User, th
 {///dont forget about capacity of elevator
 	//opens the files
 	ifstream fin("input.txt");
@@ -78,4 +79,42 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests> extReqMap, dou
 
 	//closes the files
 	fin.close();
+}
+
+void elevator(int& elevFloor, int& extFloor, map<int, User>& uMap, map<int, InternalRequests>& intReqMap, map<int, ExternalRequests>& extReqMap, double& cTime)
+{///run this function in parallel
+	if (intReqMap[elevFloor].getDir == "up")
+	{///elevator is going up
+		while (extReqMap[elevFloor].hasUpUsers())///will check if there are any users going in same dir
+		{
+			int id, dFloor;
+			id = extReqMap[elevFloor].getUpUser();
+			dFloor = uMap[id].getDestFloor();
+			if (extReqMap.count(dFloor))//if key exists
+			{
+				intReqMap[dFloor].addUser(id);
+			}
+			else //key does not exist
+			{
+				InternalRequests intReq;
+				intReq = InternalRequests(id);
+				intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq));
+			}
+		}
+		while (intReqMap[elevFloor].hasExitUser())
+		{
+			
+		}
+	}
+	else if (intReqMap[elevFloor].getDir == "down")
+	{///elevator is going down
+
+	}
+	else if (intReqMap[elevFloor].getDir == "")
+	{///elevator is not moving, elevator will go to floor of maxFloors/2 or main floor
+
+	}
+
+
+
 }
