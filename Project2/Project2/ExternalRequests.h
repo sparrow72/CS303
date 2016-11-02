@@ -7,36 +7,21 @@
 #define _ExternalRequests
 #include "Requests.h"
 #include <queue>
+using namespace std;
 
-class ExternalRequests 
+class ExternalRequests
 {
 public:
-    ~ExternalRequests();
-	ExternalRequests(int userNum = 0)
-	{
-		line.push(userNum);
-	}
-	void addUser(int userNum)
-	{
-		line.push(userNum);
-
-	}
-
-	int getUpUser()
-	{
-
-	}
-	bool hasUpUsers()
-	{
-
-	}
-	bool hasDownUsers()
-	{
-
-	}
+    ExternalRequests();
+    void addDownUser(int userNum);
+    void addUpUser(int userNum);
+    int getUpUser();
+    int getDownUser();
+    bool hasUpUsers();
+    bool hasDownUsers();
 
 private:
-	queue<int> line;
-
+    queue<int> upLine;
+    queue<int> downLine;
 };
-#endif	
+#endif
