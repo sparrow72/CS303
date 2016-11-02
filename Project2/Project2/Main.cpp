@@ -41,7 +41,7 @@ int main()
 void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, double& cTime, int& id)
 ///Read in data, insert to User, th
 {///dont forget about capacity of elevator
-	//opens the files
+ //opens the files
 	ifstream fin("input.txt");
 
 	///make sure it is compatible for // proc
@@ -62,13 +62,19 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 		id++;		///next elevator to pass user floor in same direction they hit, will stop
 		if (extReqMap.count(uFloor))//if key exists
 		{
-			extReqMap[uFloor].addUser(id);
+			if (uDir == "up")
+				extReqMap[uFloor].addUpUser(id);
+			else if (uDir == "down")
+				extReqMap[uFloor].addDownUser(id);
 		}
 		else //key does not exist
 		{
 			ExternalRequests extReq;
-			extReq = ExternalRequests(id);
 			extReqMap.insert(pair<int, ExternalRequests>(uFloor, extReq));
+			if (uDir == "up")
+				extReqMap[uFloor].addUpUser(id);
+			else if (uDir == "down")
+				extReqMap[uFloor].addDownUser(id);
 		}
 
 	}
@@ -103,12 +109,37 @@ void elevator(int& elevFloor, int& extFloor, map<int, User>& uMap, map<int, Inte
 		}
 		while (intReqMap[elevFloor].hasExitUser())
 		{
-			
+			int id;
+			id = intReqMap[elevFloor].removeUser();
+			uMap[id].setFinalTime(cTime);
 		}
+		elevFloor++;
 	}
 	else if (intReqMap[elevFloor].getDir == "down")
 	{///elevator is going down
-
+		while (extReqMap[elevFloor].hasDownUsers())///will check if there are any users going in same dir
+		{
+			int id, dFloor;
+			id = extReqMap[elevFloor].getDownUser();
+			dFloor = uMap[id].getDestFloor();
+			if (extReqMap.count(dFloor))//if key exists
+			{
+				intReqMap[dFloor].addUser(id);
+			}
+			else //key does not exist
+			{
+				InternalRequests intReq;
+				intReq = InternalRequests(id);
+				intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq));
+			}
+		}
+		while (intReqMap[elevFloor].hasExitUser())
+		{
+			int id;
+			id = intReqMap[elevFloor].removeUser();
+			uMap[id].setFinalTime(cTime);
+		}
+		elevFloor++;
 	}
 	else if (intReqMap[elevFloor].getDir == "")
 	{///elevator is not moving, elevator will go to floor of maxFloors/2 or main floor
