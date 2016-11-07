@@ -102,7 +102,6 @@ void elevator(map<int, InternalRequests>::iterator& intIter, int& elevFloor, int
 				uMap[id].setFinalTime(cTime);
 			}
 		}
-
 		if (extReqMap[intIter->first].hasUpUsers())
 		{
 			cTime++;
@@ -125,7 +124,19 @@ void elevator(map<int, InternalRequests>::iterator& intIter, int& elevFloor, int
 				}
 			}
 		}
+
 		///check all external requests for request going up, 
+		map<int, ExternalRequests>::iterator extIter = extReqMap.end();
+		int nextUpUser = -1;
+		while (extIter->first > intIter->first) //check all floors above elevator
+		{
+			if ((*extIter).second.hasUpUsers())
+			{
+				nextUpUser = (*extIter).first;
+			}
+			--extIter;
+
+		}
 		if (intIter == intReqMap.end() && intIter == intReqMap.begin())// if no more int req
 		{///for loop, check all extReq above for any users going up, if none, go to top, if no extReq, setDir ""
 
@@ -133,105 +144,158 @@ void elevator(map<int, InternalRequests>::iterator& intIter, int& elevFloor, int
 				//if none, go to extreqmap.end()... even if its below the elevator, and set the dir to down
 				//if no ext req, set dir to ""
 
-			if (extReqMap.empty())
+			if (extReqMap.empty())//no more req
 				(*intIter).second.setDir("");
-			else
+			else if (nextUpUser > (*intIter).first)//go to next ext up user
 			{
-				map<int, ExternalRequests>::iterator extIter = extReqMap.end();
-				int nextUpUser = 0;
-				while (extIter->first > intIter->first) //check all floors above elevator
+				InternalRequests intReq;
+				intReqMap.insert(pair<int, InternalRequests>(nextUpUser, intReq));
+				++intIter;
+			}
+			else//go to extReqMap.end()
+			{
+				map<int, ExternalRequests>::iterator extEnd = extReqMap.end();
+				if ((*extEnd).first > (*intIter).first) // going up
 				{
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////	
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
-					/// //////////////////////////////////////////////////////
-					// //////////////////////////////////////////////////////
+					InternalRequests intReq;
+					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					++intIter;
+				}
+				else//going down
+				{
+					(*intIter).second.setDir("down");
+					InternalRequests intReq;
+					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					--intIter;
+					cTime++;
 				}
 			}
 
 		}
 		else if (intIter != intReqMap.end())//if not at top req, go to next floor
 		{
+			//check all floors inbetween the floors
+			int currentFloor = (*intIter).first;
 			++intIter;
-			cTime++;
+			int nextFloor = (*intIter).first;
+
+			if (nextUpUser < currentFloor)//next ext up user is bellow current
+			{
+				//already went to ++intIter
+				cTime++;
+			}
+			else if (nextUpUser < nextFloor)//next ext up user is inbetween int req
+			{
+				--intIter;
+				//go to next ext up user
+				InternalRequests intReq;
+				intReqMap.insert(pair<int, InternalRequests>(nextUpUser, intReq));
+				++intIter;
+				cTime++;
+			}
+			else //next ext up user is above the next int floor
+			{
+				cTime++;
+			}
+
 		}
 		else if (intIter == intReqMap.end())//is at top with requests for lower floors
 		{
-			(*intIter).second.setDir("down");
+			if (extReqMap.empty())//no ext req
+			{
+				(*intIter).second.setDir("down");
+				//check inbetween floors
+				--intIter;
+				cTime++;
+			}
+			else if (nextUpUser > (*intIter).first)//ext up user above current floor
+			{
+				//go that floor
+			}
+			else //check if ext floor above current
+			{
+				map<int, ExternalRequests>::iterator extEnd = extReqMap.end();
+				if ((*extEnd).first > (*intIter).first) // going up
+				{
+					InternalRequests intReq;
+					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					++intIter;
+				}
+				else//going down
+				{
+					(*intIter).second.setDir("down");
+					InternalRequests intReq;
+					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					--intIter;
+					cTime++;
+				}
+				//go to extReqMap.end()
+			}
+
+		}
+	}
+	else if ((*intIter).second.getDir() == "down")
+	{///elevator is going down
+		if ((*intIter).second.hasExitUser())
+		{
+			cTime++;
+			while ((*intIter).second.hasExitUser())
+			{
+				int id;
+				id = (*intIter).second.removeUser();
+				uMap[id].setFinalTime(cTime);
+			}
+		}
+		if (extReqMap[intIter->first].hasDownUsers())
+		{
+			cTime++;
+			while (extReqMap[intIter->first].hasDownUsers())///will check if there are any users going in same dir
+			{
+				int id, dFloor;
+				id = extReqMap[intIter->first].getDownUser();
+				dFloor = uMap[id].getDestFloor();
+
+				if (extReqMap.count(dFloor))//if key exists
+				{
+					intReqMap[dFloor].addUser(id);
+				}
+				else //key does not exist
+				{
+					InternalRequests intReq;
+					intReq = InternalRequests(id);
+					intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq));
+				}
+			}
+		}
+
+		///check all external requests for request going up, 
+		map<int, ExternalRequests>::iterator extIter = extReqMap.begin();
+		int nextDownUser = -1;
+		while (extIter->first < intIter->first) //check all floors below elevator
+		{
+			if ((*extIter).second.hasUpUsers())
+			{
+				nextDownUser = (*extIter).first;
+			}
+			++extIter;
+
+		}
+		if (intIter == intReqMap.end() && intIter == intReqMap.begin())// if no more req
+		{
+			(*intIter).second.setDir("");
+		}
+		else if (intIter != intReqMap.begin())//go to next floor
+		{
 			--intIter;
 			cTime++;
 		}
+		else if (intIter == intReqMap.begin())//is at bottom with requests for lower floors
+		{
+			(*intIter).second.setDir("up");
+			++intIter;
+			cTime++;
+		}
 	}
-	//else if ((*intIter).second.getDir() == "down")
-	//{///elevator is going down
-	//	if ((*intIter).second.hasExitUser())
-	//	{
-	//		cTime++;
-	//		while ((*intIter).second.hasExitUser())
-	//		{
-	//			int id;
-	//			id = (*intIter).second.removeUser();
-	//			uMap[id].setFinalTime(cTime);
-	//		}
-	//	}
-
-	//	if (extReqMap[intIter->first].hasDownUsers())
-	//	{
-	//		cTime++;
-	//		while (extReqMap[intIter->first].hasDownUsers())///will check if there are any users going in same dir
-	//		{
-	//			int id, dFloor;
-	//			id = extReqMap[intIter->first].getDownUser();
-	//			dFloor = uMap[id].getDestFloor();
-
-	//			if (extReqMap.count(dFloor))//if key exists
-	//			{
-	//				intReqMap[dFloor].addUser(id);
-	//			}
-	//			else //key does not exist
-	//			{
-	//				InternalRequests intReq;
-	//				intReq = InternalRequests(id);
-	//				intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq));
-	//			}
-	//		}
-	//	}
-
-	//	if (intIter == intReqMap.end() && intIter == intReqMap.begin())// if no more req
-	//	{
-	//		(*intIter).second.setDir("");
-	//	}
-	//	else if (intIter != intReqMap.begin())//go to next floor
-	//	{
-	//		--intIter;
-	//		cTime++;
-	//	}
-	//	else if (intIter == intReqMap.begin())//is at bottom with requests for lower floors
-	//	{
-	//		(*intIter).second.setDir("up");
-	//		++intIter;
-	//		cTime++;
-	//	}
-	//}
 	//else if ((*intIter).second.getDir() == "")
 	//{///make sure to only send closest elevator to new external requests
 
