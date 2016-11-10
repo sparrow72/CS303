@@ -5,8 +5,15 @@
 
 #ifndef _InternalRequests
 #define _InternalRequests
-#include "Requests.h"
+#include <iostream> //Allows for in and output
+#include <string> //Allows for use of strings
+#include <list> //Allows for use of lists
+#include <locale> //Menu functionality
+#include <iterator> // next
+#include <map> // maps are awesome
 #include <queue>
+
+using namespace std;
 
 class InternalRequests 
 {

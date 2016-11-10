@@ -123,9 +123,6 @@
     <ClCompile Include="Main.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
-    <ClCompile Include="Requests.cpp">
-      <DeploymentContent>true</DeploymentContent>
-    </ClCompile>
     <ClCompile Include="User.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
@@ -135,9 +132,6 @@
       <DeploymentContent>true</DeploymentContent>
     </ClInclude>
     <ClInclude Include="InternalRequests.h">
-      <DeploymentContent>true</DeploymentContent>
-    </ClInclude>
-    <ClInclude Include="Requests.h">
       <DeploymentContent>true</DeploymentContent>
     </ClInclude>
     <ClInclude Include="User.h">

@@ -21,9 +21,6 @@
     <ClCompile Include="InternalRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Requests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,9 +30,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Requests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InternalRequests.h">
