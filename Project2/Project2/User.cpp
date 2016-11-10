@@ -11,6 +11,7 @@ User::User(double uT, int uF, int dF, string dir)
     dFloor = dF;
     uDir = dir;
     atDest = false;
+	exitTime = 0;
 }
 
 int User::getDestFloor()

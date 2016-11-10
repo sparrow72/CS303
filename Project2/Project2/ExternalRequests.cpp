@@ -21,6 +21,7 @@ int ExternalRequests::getUpUser()
 {
     int tempUser;
     tempUser = upLine.front();
+	upLine.pop();
     return tempUser;
 }
 
@@ -28,6 +29,7 @@ int ExternalRequests::getDownUser()
 {
     int tempUser;
     tempUser = downLine.front();
+	upLine.pop();
     return tempUser;
 }
 

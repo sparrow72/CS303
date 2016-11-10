@@ -6,7 +6,7 @@
 
 InternalRequests::InternalRequests()
 {
-
+	eDir = "";
 }
 
 void InternalRequests::setDir(string D)
