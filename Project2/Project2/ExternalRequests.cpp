@@ -33,15 +33,15 @@ int ExternalRequests::getDownUser()
 
 bool ExternalRequests::hasUpUsers()
 {
-    if (upLine.front() != NULL)
+    if (upLine.empty())
         return false;
     else 
-        return false;
+        return true;
 }
 
 bool ExternalRequests::hasDownUsers()
 {
-    if (downLine.front() != NULL)
+    if (downLine.empty())
         return false;
     else
         return true;

@@ -11,7 +11,7 @@
 class InternalRequests 
 {
 public:
-    InternalRequests(int userNum = 0);
+    InternalRequests();
     void setDir(string D);
     string getDir();
     void addUser(int userNum);

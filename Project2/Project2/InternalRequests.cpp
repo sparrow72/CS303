@@ -4,9 +4,9 @@
 // Fall 2016
 // Prof. Mohammad Kuhail
 
-InternalRequests::InternalRequests(int userNum)
+InternalRequests::InternalRequests()
 {
-    line.push(userNum);
+
 }
 
 void InternalRequests::setDir(string D)

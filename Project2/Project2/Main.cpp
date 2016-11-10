@@ -14,6 +14,8 @@
 
 using namespace std;
 void extRequests(map<int, User>&, map<int, ExternalRequests>&, double&, int&);
+void elevator(double&, map<int, InternalRequests>::iterator&, map<int,InternalRequests>&, map<int,User>&, map<int,ExternalRequests>&);
+void ticks(double&, map<int, InternalRequests>::iterator, map<int,InternalRequests>&);
 
 int main()
 {
@@ -23,9 +25,10 @@ int main()
 	Requests req;
 	InternalRequests intReq;
 	map<int, User> uMap;
-	map<int, Requests> eMap;///is elevator, iter will be current floor of elevator, eMap.first->next will be next destination
-	map<int, ExternalRequests> extReqMap;///use to keep track of all external users at floor
-	map<int, InternalRequests> intReqMap;///not sure if I need this, it may come in handy. :)
+	map<int, ExternalRequests> extReqMap;
+	map<int, InternalRequests> intReqMap;
+
+
 
 	int id = 0;
 	double cTime = 000000; //current time hh.mm.ss
@@ -39,33 +42,32 @@ int main()
 }
 
 void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, double& cTime, int& id)
-///Read in data, insert to User, th
 {///dont forget about capacity of elevator
- //opens the files
+ //opens the file
 	ifstream fin("input.txt");
 
-	///make sure it is compatible for // proc
-	///consider putting it in a while(fin.good()) function.. 
-	double uTime; //user time (time user takes action)
-				  ///have user time and current time to denote when each user takes the action, 
-				  ///should exept no action being taken and multiple actions at once
+	double uTime; //user time (when the user takes action)
 	string uDir;
 	int uFloor, dFloor; //user floor and destination floor.
 
 	fin >> uTime, uDir, uFloor, dFloor;
-
+	///find some way to only excute if correct time
+	///currently it will skip the user if it is not correct time
+	///maybe just make this a wrapper function, and call the other one when the time matches
 	if (uTime >= cTime)
 	{
 		User usr;
 		usr = User(uTime, uFloor, dFloor, uDir);
 		uMap.insert(pair<int, User>(id, usr));
-		id++;		///next elevator to pass user floor in same direction they hit, will stop
-		if (extReqMap.count(uFloor))//if key exists
+		id++;
+
+		if (extReqMap.count(uFloor) > 0)//if key exists
 		{
 			if (uDir == "up")
 				extReqMap[uFloor].addUpUser(id);
 			else if (uDir == "down")
 				extReqMap[uFloor].addDownUser(id);
+			cTime++;
 		}
 		else //key does not exist
 		{
@@ -75,289 +77,319 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 				extReqMap[uFloor].addUpUser(id);
 			else if (uDir == "down")
 				extReqMap[uFloor].addDownUser(id);
+			cTime++;
 		}
 
 	}
-	else
-	{
-		cTime++;///find a better way to increment the time... this is not incrementing with all the classes
-	}
+	///else
+	///{
+	///	cTime++;
+	///}
 
-	//closes the files
+	//closes the file
 	fin.close();
 }
 
-void elevator(map<int, InternalRequests>::iterator& intIter, int& elevFloor, int& extFloor, double& cTime, map<int, User>& uMap, map<int, InternalRequests>& intReqMap, map<int, ExternalRequests>& extReqMap)
+void elevator( double& cTime, map<int, InternalRequests>::iterator& intIter, map<int, InternalRequests>& intReqMap, map<int, User>& uMap,  map<int, ExternalRequests>& extReqMap)
 {///run this function in parallel
+	//elevator is going up
 	if ((*intIter).second.getDir() == "up")
-	{///elevator is going up
-
+	{
+		//lets people off
 		if ((*intIter).second.hasExitUser())
 		{
-			cTime++;
-			while ((*intIter).second.hasExitUser())//lets ppl off
+			while ((*intIter).second.hasExitUser())
 			{
+				cTime++;
 				int id;
 				id = (*intIter).second.removeUser();
 				uMap[id].setFinalTime(cTime);
 			}
 		}
-		if (extReqMap[intIter->first].hasUpUsers())
-		{
-			cTime++;
-			while (extReqMap[intIter->first].hasUpUsers())//lets ppl on
-			{///will check if there are any users going in same dir
 
+		//lets people on
+		if (extReqMap.count(intIter->first) > 0)
+		{
+			while (extReqMap[intIter->first].hasUpUsers())
+			{
+				cTime++;
 				int id, dFloor;
 				id = extReqMap[intIter->first].getUpUser();
 				dFloor = uMap[id].getDestFloor();
 
-				if (intReqMap.count(dFloor))//if key exists
+				if (intReqMap.count(dFloor) > 0)//if key exists
 				{
 					intReqMap[dFloor].addUser(id);
 				}
 				else //key does not exist
 				{
 					InternalRequests intReq;
-					intReq = InternalRequests(id);
+					intReq.addUser(id);
 					intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq));
 				}
 			}
-		}
-
-		///check all external requests for request going up, 
-		map<int, ExternalRequests>::iterator extIter = extReqMap.end();
-		int nextUpUser = -1;
-		while (extIter->first > intIter->first) //check all floors above elevator
-		{
-			if ((*extIter).second.hasUpUsers())
+			if (!extReqMap[intIter->first].hasDownUsers())
 			{
-				nextUpUser = (*extIter).first;
+				extReqMap.erase(intIter->first);
 			}
-			--extIter;
-
 		}
-		if (intIter == intReqMap.end() && intIter == intReqMap.begin())// if no more int req
-		{///for loop, check all extReq above for any users going up, if none, go to top, if no extReq, setDir ""
 
-			//get next ext floor with up user
-				//if none, go to extreqmap.end()... even if its below the elevator, and set the dir to down
-				//if no ext req, set dir to ""
+		//gets current and next floors
+		int nextExtFloor = intIter->first;
+		if (!extReqMap.empty())
+		{
+			map<int, ExternalRequests>::iterator extIter = extReqMap.upper_bound(intIter->first);
+			while (extIter != extReqMap.end()) //check all floors above elevator
+			{
+				if ((*extIter).second.hasUpUsers())
+				{
+					nextExtFloor = (*extIter).first;
+					break;///where does this land me?	
+				}
+				++extIter;
+			}
+		}
+		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first;
+		++intIter;
+		if (intIter != intReqMap.end())
+			int nextIntFloor = (*intIter).first;
+		--intIter;
+
+		//moves elevator
+		if (intIter == intReqMap.begin() && --intIter == intReqMap.end())// if no more int req
+		{
+			++intIter;
 
 			if (extReqMap.empty())//no more req
 				(*intIter).second.setDir("");
-			else if (nextUpUser > (*intIter).first)//go to next ext up user
+			else if (nextExtFloor > currentIntFloor)//go to next ext up user
 			{
 				InternalRequests intReq;
-				intReqMap.insert(pair<int, InternalRequests>(nextUpUser, intReq));
+				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
+				ticks(cTime, intIter, intReqMap);
 				++intIter;
 			}
 			else//go to extReqMap.end()
 			{
 				map<int, ExternalRequests>::iterator extEnd = extReqMap.end();
-				if ((*extEnd).first > (*intIter).first) // going up
+				--extEnd;
+				if ((*extEnd).first > currentIntFloor) // going up
 				{
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
-					++intIter;
+					ticks(cTime, intIter, intReqMap);
+					++intIter;					
 				}
-				else//going down
+				else if ((*extEnd).first < currentIntFloor)//going down
 				{
 					(*intIter).second.setDir("down");
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					--intIter;
-					cTime++;
+				}
+				else //is on same floor
+				{
+					(*intIter).second.setDir("down");
 				}
 			}
 
 		}
-		else if (intIter != intReqMap.end())//if not at top req, go to next floor
+		else if (--intIter != intReqMap.end())//if not at top req, go to next floor
 		{
-			//check all floors inbetween the floors
-			int currentFloor = (*intIter).first;
 			++intIter;
-			int nextFloor = (*intIter).first;
-
-			if (nextUpUser < currentFloor)//next ext up user is bellow current
+			if (currentIntFloor < nextExtFloor && nextExtFloor < nextIntFloor)//next ext up user is inbetween int req
 			{
-				//already went to ++intIter
-				cTime++;
-			}
-			else if (nextUpUser < nextFloor)//next ext up user is inbetween int req
-			{
-				--intIter;
 				//go to next ext up user
 				InternalRequests intReq;
-				intReqMap.insert(pair<int, InternalRequests>(nextUpUser, intReq));
+				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
+				ticks(cTime, intIter, intReqMap);
 				++intIter;
-				cTime++;
 			}
 			else //next ext up user is above the next int floor
 			{
-				cTime++;
+				ticks(cTime, intIter, intReqMap);
+				++intIter;
 			}
 
 		}
-		else if (intIter == intReqMap.end())//is at top with requests for lower floors
+		else if (currentIntFloor == nextIntFloor)//no more int up req
 		{
 			if (extReqMap.empty())//no ext req
 			{
 				(*intIter).second.setDir("down");
-				//check inbetween floors
-				--intIter;
-				cTime++;
+				ticks(cTime, intIter, intReqMap);
+				--intIter;				
 			}
-			else if (nextUpUser > (*intIter).first)//ext up user above current floor
+			else if (nextExtFloor > currentIntFloor)//ext up user above current floor
 			{
 				//go that floor
 				InternalRequests intReq;
-				intReqMap.insert(pair<int, InternalRequests>(nextUpUser, intReq));
+				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
+				ticks(cTime, intIter, intReqMap);
 				++intIter;
 			}
-			else //check if ext floor above current
+			else //go to extReqMap.end()
 			{
 				map<int, ExternalRequests>::iterator extEnd = extReqMap.end();
+				--extEnd;
 				if ((*extEnd).first > (*intIter).first) // going up
 				{
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					++intIter;
 				}
-				else//going down
+				else if ((*extEnd).first < (*intIter).first)//going down
 				{
 					(*intIter).second.setDir("down");
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					--intIter;
-					cTime++;
 				}
-				//go to extReqMap.end()
+				else //is on same floor
+				{
+					(*intIter).second.setDir("down");
+				}
 			}
-
 		}
 	}
+
+	//elevator is going down
 	else if ((*intIter).second.getDir() == "down")
-	{///elevator is going down
+	{
+
+		//lets people off
 		if ((*intIter).second.hasExitUser())
 		{
-			cTime++;
 			while ((*intIter).second.hasExitUser())
 			{
+				cTime++;
 				int id;
 				id = (*intIter).second.removeUser();
 				uMap[id].setFinalTime(cTime);
 			}
 		}
-		if (extReqMap[intIter->first].hasDownUsers())
+
+		//lets people on
+		if (extReqMap.count(intIter->first) > 0)
 		{
-			cTime++;
-			while (extReqMap[intIter->first].hasDownUsers())///will check if there are any users going in same dir
+			while (extReqMap[intIter->first].hasDownUsers())
 			{
+				cTime++;
 				int id, dFloor;
 				id = extReqMap[intIter->first].getDownUser();
 				dFloor = uMap[id].getDestFloor();
 
-				if (extReqMap.count(dFloor))//if key exists
+				if (intReqMap.count(dFloor) > 0)//if key exists
 				{
 					intReqMap[dFloor].addUser(id);
 				}
 				else //key does not exist
 				{
 					InternalRequests intReq;
-					intReq = InternalRequests(id);
+					intReq.addUser(id);
 					intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq));
 				}
 			}
-		}
-
-		///check all external requests for request going up, 
-		map<int, ExternalRequests>::iterator extIter = extReqMap.begin();
-		int nextDownUser = -1;
-		while (extIter->first < intIter->first) //check all floors below elevator
-		{
-			if ((*extIter).second.hasDownUsers())
+			if (!extReqMap[intIter->first].hasDownUsers())
 			{
-				nextDownUser = (*extIter).first;
+				extReqMap.erase(intIter->first);
 			}
-			++extIter;
-
 		}
-		if (intIter == intReqMap.end() && intIter == intReqMap.begin())// if no more req
+
+		//gets current and next floors
+		int nextExtFloor = intIter->first;
+		if (!extReqMap.empty())
 		{
+			map<int, ExternalRequests>::iterator extIter = extReqMap.lower_bound(intIter->first);
+			while (extIter != extReqMap.begin()) //check all floors above elevator
+			{
+				if ((*extIter).second.hasDownUsers())
+				{
+					nextExtFloor = (*extIter).first;
+					break;///where does this land me?	
+				}
+				--extIter;
+			}
+		}
+		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first;
+		--intIter;
+		if (intIter != intReqMap.end())
+			int nextIntFloor = (*intIter).first;
+		++intIter;
+
+		//moves elevator
+		if (intIter == intReqMap.begin() && --intIter == intReqMap.end())// if no more req
+		{
+			++intIter;
+
 			if (extReqMap.empty())//no more req
 				(*intIter).second.setDir("");
-			else if (nextDownUser < (*intIter).first)//go to next ext down user
+			else if (nextExtFloor < currentIntFloor)//go to next ext down user
 			{
 				InternalRequests intReq;
-				intReqMap.insert(pair<int, InternalRequests>(nextDownUser, intReq));
+				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
+				ticks(cTime, intIter, intReqMap);
 				--intIter;
 			}
 			else//go to extReqMap.begin()
 			{
 				map<int, ExternalRequests>::iterator extEnd = extReqMap.begin();
-				if ((*extEnd).first > (*intIter).first) // going up
+				if ((*extEnd).first > currentIntFloor) // going up
 				{
 					(*intIter).second.setDir("up");
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					++intIter;
 				}
-				else//going down
+				else if ((*extEnd).first < currentIntFloor)//going down
 				{
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					--intIter;
-					cTime++;
+				}
+				else //is on same floor
+				{
+					(*intIter).second.setDir("down");
 				}
 			}
 		}
-		else if (intIter != intReqMap.begin())//go to next floor
-		{
-
-			//check all floors inbetween the floors
-			int currentFloor = (*intIter).first;
-			--intIter;
-			int nextFloor = (*intIter).first;
-
-			if (nextDownUser > currentFloor)//next ext down user is above current
+		else if (intIter != intReqMap.begin())//if not at bottem, go to next floor
+		{//check all floors inbetween the floors
+			if (currentIntFloor > nextExtFloor && nextExtFloor > nextIntFloor)//next ext down user is above current
 			{
-				//already went to --intIter
-				cTime++;
-			}
-			else if (nextDownUser > nextFloor)//next ext down user between the floors
-			{
-				++intIter;
-				//go to next ext up user
 				InternalRequests intReq;
-				intReqMap.insert(pair<int, InternalRequests>(nextDownUser, intReq));
+				intReqMap.insert(pair<int, InternalRequests>(nextIntFloor, intReq));
+				ticks(cTime, intIter, intReqMap);
 				--intIter;
-				cTime++;
 			}
-			else //next ext down user is below the next int floor
+			else if (nextExtFloor > nextIntFloor)//next ext down user between the floors
 			{
-				cTime++;
+				ticks(cTime, intIter, intReqMap);
+				--intIter;
 			}
-
-			
 		}
-		else if (intIter == intReqMap.begin())//is at bottom with requests for upper floors
+		else if (currentIntFloor == nextIntFloor)//is at bottom with requests for upper floors
 		{
 			if (extReqMap.empty())//no ext req
 			{
 				(*intIter).second.setDir("up");
+				ticks(cTime, intIter, intReqMap);
 				++intIter;
-				cTime++;
 			}
-			else if (nextDownUser < (*intIter).first)//ext down user below current floor
+			else if (nextExtFloor < currentIntFloor)//ext down user below current floor
 			{
 				//go that floor
 				InternalRequests intReq;
-				intReqMap.insert(pair<int, InternalRequests>(nextDownUser, intReq));
+				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
+				ticks(cTime, intIter, intReqMap);
 				--intIter;
-
 			}
-			else //check if ext floor below current
+			else //go to extReqMap.begin()
 			{
 				map<int, ExternalRequests>::iterator extEnd = extReqMap.begin();
 				if ((*extEnd).first > (*intIter).first) // going up
@@ -365,25 +397,72 @@ void elevator(map<int, InternalRequests>::iterator& intIter, int& elevFloor, int
 					(*intIter).second.setDir("up");
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					++intIter;
 				}
-				else//going down
+				else if ((*extEnd).first < (*intIter).first)//going down
 				{
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
+					ticks(cTime, intIter, intReqMap);
 					--intIter;
-					cTime++;
 				}
-				//go to extReqMap.begin()
+				else //is on same floor
+				{
+					(*intIter).second.setDir("down");
+				}
 			}
-
 		}
 	}
+
 	else if ((*intIter).second.getDir() == "")
 	{///make sure to only send closest elevator to new external requests
-
+		if (!extReqMap.empty())
+		{
+			map<int, ExternalRequests>::iterator down = extReqMap.lower_bound(intIter->first);
+			if (down == extReqMap.end())
+				--down;
+			map<int, ExternalRequests>::iterator up = extReqMap.upper_bound(intIter->first);
+			if (up == extReqMap.end())
+				--up;
+			
+			if (up->first - intIter->first <= down->first - intIter->first)
+			{
+				(*intIter).second.setDir("up");
+				InternalRequests intReq;
+				intReqMap.insert(pair<int, InternalRequests>((*up).first, intReq));
+				ticks(cTime, intIter, intReqMap);
+				++intIter;
+			}
+			else 
+			{
+				(*intIter).second.setDir("up");
+				InternalRequests intReq;
+				intReqMap.insert(pair<int, InternalRequests>((*down).first, intReq));
+				ticks(cTime, intIter, intReqMap);
+				++intIter;
+			}
+		}
 	}
+}
 
-
+void ticks(double& cTime, map<int, InternalRequests>::iterator intIter, map<int, InternalRequests>& intReqMap)
+{
+	if ((*intIter).second.getDir() == "up")
+	{
+		int f1 = intIter->first;
+		++intIter;
+		int f2 = intIter->first;
+		cTime += 3 * abs(f1 - f2);
+		intReqMap.erase(f1);
+	}
+	else if ((*intIter).second.getDir() == "down")
+	{
+		int f1 = intIter->first;
+		--intIter;
+		int f2 = intIter->first;
+		cTime += 3 * abs(f1 - f2);
+		intReqMap.erase(f1);
+	}
 
 }
