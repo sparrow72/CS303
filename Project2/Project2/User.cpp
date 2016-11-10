@@ -15,12 +15,23 @@ User::User(double uT, int uF, int dF, string dir)
 
 int User::getDestFloor()
 {
-    return dFloor;
+	return dFloor;
 }
+
+int User::getStartFloor()
+{
+	return uFloor;
+}
+
 
 double User::getFinalTime()
 {
     return exitTime;
+}
+
+double User::getStartTime()
+{
+	return uTime;
 }
 
 void User::setFinalTime(double FT)

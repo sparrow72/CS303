@@ -20,24 +20,23 @@ void ticks(double&, map<int, InternalRequests>::iterator, map<int,InternalReques
 int main()
 {
 
-	ofstream fout("output.txt");
+	
 
-	Requests req;
+	
 	InternalRequests intReq;
 	map<int, User> uMap;
 	map<int, ExternalRequests> extReqMap;
 	map<int, InternalRequests> intReqMap;
-
+	map<int, InternalRequests>::iterator intIter;
 
 
 	int id = 0;
 	double cTime = 000000; //current time hh.mm.ss
 
 	extRequests(uMap, extReqMap, cTime, id);
+	elevator(cTime, intIter, intReqMap, uMap, extReqMap);
 
-
-	//closes the files
-	fout.close();
+	
 	return 1;
 }
 
@@ -50,41 +49,44 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 	string uDir;
 	int uFloor, dFloor; //user floor and destination floor.
 
-	fin >> uTime, uDir, uFloor, dFloor;
-	///find some way to only excute if correct time
-	///currently it will skip the user if it is not correct time
-	///maybe just make this a wrapper function, and call the other one when the time matches
-	if (uTime >= cTime)
+	while (fin.good())
 	{
-		User usr;
-		usr = User(uTime, uFloor, dFloor, uDir);
-		uMap.insert(pair<int, User>(id, usr));
-		id++;
+		fin >> uTime, uDir, uFloor, dFloor;
 
-		if (extReqMap.count(uFloor) > 0)//if key exists
+		///maybe just make this a wrapper function, and call the other one when the time matches
+		while (uTime < cTime)
 		{
-			if (uDir == "up")
-				extReqMap[uFloor].addUpUser(id);
-			else if (uDir == "down")
-				extReqMap[uFloor].addDownUser(id);
-			cTime++;
-		}
-		else //key does not exist
-		{
-			ExternalRequests extReq;
-			extReqMap.insert(pair<int, ExternalRequests>(uFloor, extReq));
-			if (uDir == "up")
-				extReqMap[uFloor].addUpUser(id);
-			else if (uDir == "down")
-				extReqMap[uFloor].addDownUser(id);
 			cTime++;
 		}
 
+		//inputs data from txt file
+		if (uTime >= cTime)
+		{
+			User usr;
+			usr = User(uTime, uFloor, dFloor, uDir);
+			uMap.insert(pair<int, User>(id, usr));
+			id++;
+
+			if (extReqMap.count(uFloor) > 0)//if key exists
+			{
+				if (uDir == "up")
+					extReqMap[uFloor].addUpUser(id);
+				else if (uDir == "down")
+					extReqMap[uFloor].addDownUser(id);
+				cTime++;
+			}
+			else //key does not exist
+			{
+				ExternalRequests extReq;
+				extReqMap.insert(pair<int, ExternalRequests>(uFloor, extReq));
+				if (uDir == "up")
+					extReqMap[uFloor].addUpUser(id);
+				else if (uDir == "down")
+					extReqMap[uFloor].addDownUser(id);
+				cTime++;
+			}
+		}
 	}
-	///else
-	///{
-	///	cTime++;
-	///}
 
 	//closes the file
 	fin.close();
@@ -453,7 +455,7 @@ void ticks(double& cTime, map<int, InternalRequests>::iterator intIter, map<int,
 		int f1 = intIter->first;
 		++intIter;
 		int f2 = intIter->first;
-		cTime += 3 * abs(f1 - f2);
+		cTime += 5 * abs(f1 - f2);
 		intReqMap.erase(f1);
 	}
 	else if ((*intIter).second.getDir() == "down")
@@ -465,4 +467,19 @@ void ticks(double& cTime, map<int, InternalRequests>::iterator intIter, map<int,
 		intReqMap.erase(f1);
 	}
 
+}
+
+void userOutput(map<int, User>& uMap)
+{
+	ofstream fout("output.txt");
+
+	fout << "User\tStart Time\tFinal Time\t Start Floor\tDestination Floor";
+	for (map<int, User>::iterator iter = uMap.begin(); iter != uMap.end(); iter++)
+	{
+		fout << (*iter).first << "\t" << (*iter).second.getStartTime() << "\t" << (*iter).second.getFinalTime() << "\t" <<
+			(*iter).second.getStartFloor() << "\t" << (*iter).second.getDestFloor() << endl;
+	}
+
+	//closes the files
+	fout.close();
 }

@@ -19,8 +19,10 @@ class User
 {
 public:
     User(double uT = 0, int uF = 0, int dF = 0, string dir = "");
-    int getDestFloor();
+	int getDestFloor();
+	int getStartFloor();
     double getFinalTime();
+	double getStartTime();
     void setFinalTime(double FT);
 
 private:
