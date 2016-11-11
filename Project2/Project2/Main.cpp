@@ -32,10 +32,10 @@ int main()
 
 	int id = 0; //Default ID
 	double cTime, uTime = 0; //Current time hh.mm.ss
-    omp_set_num_threads(3);
+    omp_set_num_threads(3); //Parallel the for loop
 #pragma omp parallel for
-	for (double cTime = 000000;cTime < 21;cTime++) 
-	{
+	for (double cTime = 000000;cTime < 21; cTime++) 
+	{ //This for loop is executing all of the requests
 		extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 		elevator(cTime, intIter, intReqMap, uMap, extReqMap);
 	}
