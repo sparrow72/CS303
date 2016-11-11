@@ -26,18 +26,21 @@ int main()
 	InternalRequests intReq;
 	map<int, User> uMap; //Create a User Map
 	map<int, ExternalRequests> extReqMap; //Create a Map of external (Outside elevator) requests
-	map<int, InternalRequests> intReqMap; //Create a Map of internal (Inside elevator) requests
-	intReqMap.insert(pair<int, InternalRequests>(1, intReq));
-	map<int, InternalRequests>::iterator intIter = intReqMap.begin(); //Create an iterator at the beginning
+	map<int, InternalRequests> intReqMap[2]; //Create a Map of internal (Inside elevator) requests
+	intReqMap[0].insert(pair<int, InternalRequests>(1, intReq));
+	map<int, InternalRequests>::iterator intIter = intReqMap[0].begin(); //Create an iterator at the beginning
+	intReqMap[1].insert(pair<int, InternalRequests>(1, intReq));
+	map<int, InternalRequests>::iterator intIter2 = intReqMap[1].begin(); //Create an iterator at the beginning
 
 	int id = 0; //Default ID
 	double cTime = 1, uTime = 1; //Current time hh.mm.ss
-								 //	omp_set_num_threads(3); //Parallel the for loop
-								 //#pragma omp parallel for
-	for (double cTime = 000000;cTime < 200; cTime++)
+								 	omp_set_num_threads(3); //Parallel the for loop
+								 #pragma omp parallel for
+	for (cTime = 1;cTime < 9000000; cTime++)
 	{ //This for loop is executing all of the requests
 		extRequests(uMap, extReqMap, cTime, id, fin, uTime);
-		elevator(cTime, intIter, intReqMap, uMap, extReqMap);
+		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap);
+		//elevator(cTime, intIter2, intReqMap[1], uMap, extReqMap);
 	}
 	userOutput(uMap); //Output the final Map
 
@@ -48,7 +51,7 @@ int main()
 void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, double& cTime, int& id, istream& fin, double& uTime)
 {///dont forget about capacity of elevator
  ////opens the file
- //ifstream fin("input.txt");
+
 
 
 	string uDir; //Elevator Direction
@@ -56,14 +59,9 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 	if (uTime == 1) //Start inputting requests
 		fin >> uTime; //Input time
 
-					  ///maybe just make this a wrapper function, and call the other one when the time matches
-					  /*while (uTime < cTime)
-					  {
-					  cTime++;
-					  }*/
 
-					  //inputs data from txt file
-	if (uTime >= cTime && fin.good()) //If atleast 1 request and file is reading
+	//inputs data from txt file
+	if (uTime <= cTime && fin.good()) //If atleast 1 request and file is reading
 	{
 		fin >> uDir >> uFloor >> dFloor; //Input direction and floors
 		User usr; //Create user class
@@ -96,7 +94,7 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 
 		id++; //Increment next ID
 	}
-	//fin.close(); //Close File
+	
 }
 
 void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int, InternalRequests>& intReqMap, map<int, User>& uMap, map<int, ExternalRequests>& extReqMap)
@@ -199,7 +197,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq)); //New Internal Request
 					ticks(cTime, intIter, intReqMap);
-					//--intIter;
+					
 				}
 				else //is on same floor
 				{
@@ -351,8 +349,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			nextIntFloor = (*intIter).first; //Go to next internal request
 			++intIter;
 		}
-        else
-            intIter = intReqMap.begin();
+		else
+			intIter = intReqMap.begin();
 
 		//Moves elevator
 		if (intReqMap.size() == 1)// if no more req
