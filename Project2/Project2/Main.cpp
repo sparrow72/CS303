@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <iomanip>      // std::setw
 
 using namespace std;
 void extRequests(map<int, User>&, map<int, ExternalRequests>&, double&, int&, istream& fin);
@@ -35,7 +36,7 @@ int main()
 	int id = 0;
 	double cTime = 000000; //current time hh.mm.ss
 
-	for (double cTime = 000000;cTime < 200;cTime++)
+	for (double cTime = 000000;cTime < 21;cTime++)
 	{
 
 		extRequests(uMap, extReqMap, cTime, id, fin);
@@ -546,7 +547,7 @@ void userOutput(map<int, User>& uMap)
 	fout << "User\tStart Time\tFinal Time\t Start Floor\tDestination Floor\n";
 	for (map<int, User>::iterator iter = uMap.begin(); iter != uMap.end(); iter++)
 	{
-		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << "\t\t\t" <<
+		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << setw(13) <<
 			(*iter).second.getStartFloor() << "\t\t\t\t" << (*iter).second.getDestFloor() << endl;
 	}
 
