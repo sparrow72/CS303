@@ -128,11 +128,13 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				if (intReqMap.count(dFloor) > 0)//If key exists
 				{
 					intReqMap[dFloor].addUser(id); //Add user for Internal
+					intReqMap[dFloor].setDir("up");
 				}
 				else //key does not exist
 				{
 					InternalRequests intReq;
 					intReq.addUser(id); //Create the User ID
+					intReq.setDir("up");
 					intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq)); //Add to Map Internal
 				}
 			}
@@ -160,7 +162,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first; //Start floor, end floor
 		++intIter; //Add Internal
 		if (intIter != intReqMap.end()) //More internal passengers
-			int nextIntFloor = (*intIter).first; //Next floor
+			nextIntFloor = (*intIter).first; //Next floor
 		--intIter; //Remove a passenger
 
 
@@ -312,11 +314,13 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				if (intReqMap.count(dFloor) > 0) //If key exists
 				{
 					intReqMap[dFloor].addUser(id); //Add the user riding
+					intReqMap[dFloor].setDir("down");
 				}
 				else //Key does not exist
 				{
 					InternalRequests intReq;
 					intReq.addUser(id); //Create the new User
+					intReq.setDir("down");
 					intReqMap.insert(pair<int, InternalRequests>(dFloor, intReq)); //Add user to the requests
 				}
 			}
@@ -343,7 +347,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first; //Set current, ending floor
 		--intIter;
 		if (intIter != intReqMap.end()) //Not at the end of internal requests
-			int nextIntFloor = (*intIter).first; //Go to next internal request
+			nextIntFloor = (*intIter).first; //Go to next internal request
 		++intIter;
 
 		//Moves elevator
