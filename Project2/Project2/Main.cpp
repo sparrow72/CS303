@@ -32,8 +32,8 @@ int main()
 
 	int id = 0; //Default ID
 	double cTime = 1, uTime = 1; //Current time hh.mm.ss
-//	omp_set_num_threads(3); //Parallel the for loop
-//#pragma omp parallel for
+								 //	omp_set_num_threads(3); //Parallel the for loop
+								 //#pragma omp parallel for
 	for (double cTime = 000000;cTime < 200; cTime++)
 	{ //This for loop is executing all of the requests
 		extRequests(uMap, extReqMap, cTime, id, fin, uTime);
@@ -48,7 +48,7 @@ int main()
 void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, double& cTime, int& id, istream& fin, double& uTime)
 {///dont forget about capacity of elevator
  ////opens the file
-	//ifstream fin("input.txt");
+ //ifstream fin("input.txt");
 
 
 	string uDir; //Elevator Direction
@@ -56,20 +56,20 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 	if (uTime == 1) //Start inputting requests
 		fin >> uTime; //Input time
 
-	///maybe just make this a wrapper function, and call the other one when the time matches
-	/*while (uTime < cTime)
-	{
-		cTime++;
-	}*/
+					  ///maybe just make this a wrapper function, and call the other one when the time matches
+					  /*while (uTime < cTime)
+					  {
+					  cTime++;
+					  }*/
 
-	//inputs data from txt file
+					  //inputs data from txt file
 	if (uTime >= cTime && fin.good()) //If atleast 1 request and file is reading
 	{
 		fin >> uDir >> uFloor >> dFloor; //Input direction and floors
 		User usr; //Create user class
 		usr = User(uTime, uFloor, dFloor, uDir); //Create User
 		uMap.insert(pair<int, User>(id, usr)); //Insert User into Map
-		
+
 
 		if (extReqMap.count(uFloor) > 0)//if key exists
 		{
@@ -120,24 +120,25 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				cTime++; //Increment time
 				int id, dFloor; //Create Variables
 				double uTime = 0;
-				
+
 
 
 				id = extReqMap[intIter->first].getUpUser(); //Get the first user
+				cout << endl << id;
 				uTime = uMap[id].getStartTime(); //Get the request time
-				/// this code is reading in the wrong user
-				/// ///////////////////////////////////////////////
-				// ///////////////////////////////////////////////
-				// //////////////////////////////////////////////
-				// /////////////////////////////////////////////
-				/*if (uTime == 0)
-				{
-					id = extReqMap[intIter->first].getUpUser();
+												 /// this code is reading in the wrong user
+												 /// ///////////////////////////////////////////////
+												 // ///////////////////////////////////////////////
+												 // //////////////////////////////////////////////
+												 // /////////////////////////////////////////////
+												 /*if (uTime == 0)
+												 {
+												 id = extReqMap[intIter->first].getUpUser();
 
-				}*/
+												 }*/
 
 				dFloor = uMap[id].getDestFloor(); //Get destination
-
+				cout << endl << dFloor;
 				if (intReqMap.count(dFloor) > 0)//If key exists
 				{
 					intReqMap[dFloor].addUser(id); //Add user for Internal
@@ -176,10 +177,11 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			int nextIntFloor = (*intIter).first; //Next floor
 		--intIter; //Remove a passenger
 
-		//moves elevator
-		if (intIter == intReqMap.begin() && --intIter == intReqMap.end())//If no more int req
+
+				   //moves elevator
+		if (intReqMap.size() == 1)//If no more int req
 		{
-			++intIter; //Add Internal Passenger
+
 
 			if (extReqMap.empty())//no more req
 				(*intIter).second.setDir("");
@@ -188,7 +190,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq)); //Add new request
 				ticks(cTime, intIter, intReqMap); //Change time
-				//++intIter;
+												  //++intIter;
 			}
 			else //Go to extReqMap.end()
 			{
@@ -216,9 +218,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			}
 
 		}
-		else if (--intIter != intReqMap.end()) //If not at top req, go to next floor
+		else if (currentIntFloor != nextIntFloor) //If not at top req, go to next floor
 		{
-			++intIter; //New passenger
 			if (currentIntFloor < nextExtFloor && nextExtFloor < nextIntFloor) //Next ext up user is inbetween int req
 			{
 				//go to next ext up user
@@ -296,28 +297,28 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				cTime++;
 				int id = extReqMap[intIter->first].getDownUser(); //Set ID for going down
 				int dFloor = uMap[id].getDestFloor(); //Set ending floor
-				/// this code is reading in the wrong user
-				/// /////////////////////////////////////////////// Redacted code from the US Gov
-				// ///////////////////////////////////////////////
-				/// /////////////////////////////////////////////
-				// /////////////////////////////////////////////
-				/// ///////////////////////////////////////////
-				// ///////////////////////////////////////////
-				/// /////////////////////////////////////////
-				// /////////////////////////////////////////
-				/// ///////////////////////////////////////
-				// ///////////////////////////////////////
-				/// /////////////////////////////////////
-				// 888'Y88     e   e     888 ///////////   
-				///888, 'Y    d8b d8b    888 //////////
-				// 888C8     e Y8b Y8b   888 /////////
-				///888 "    d8b Y8b Y8b  888  ,d ////
-				// 888     d888b Y8b Y8b 888, d88 //
-				// ////////////////////////////////
-				/// //////////////////////////////
-				// //////////////////////////////
-				/// ////////////////////////////
-				// ////////////////////////////
+													  /// this code is reading in the wrong user
+													  /// /////////////////////////////////////////////// Redacted code from the US Gov
+													  // ///////////////////////////////////////////////
+													  /// /////////////////////////////////////////////
+													  // /////////////////////////////////////////////
+													  /// ///////////////////////////////////////////
+													  // ///////////////////////////////////////////
+													  /// /////////////////////////////////////////
+													  // /////////////////////////////////////////
+													  /// ///////////////////////////////////////
+													  // ///////////////////////////////////////
+													  /// /////////////////////////////////////
+													  // 888'Y88     e   e     888 ///////////   
+													  ///888, 'Y    d8b d8b    888 //////////
+													  // 888C8     e Y8b Y8b   888 /////////
+													  ///888 "    d8b Y8b Y8b  888  ,d ////
+													  // 888     d888b Y8b Y8b 888, d88 //
+													  // ////////////////////////////////
+													  /// //////////////////////////////
+													  // //////////////////////////////
+													  /// ////////////////////////////
+													  // ////////////////////////////
 
 
 				if (intReqMap.count(dFloor) > 0) //If key exists
@@ -358,9 +359,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 		++intIter;
 
 		//Moves elevator
-		if (intIter == intReqMap.begin() && --intIter == intReqMap.end())// if no more req
+		if (intReqMap.size() == 1)// if no more req
 		{
-			++intIter;
 			if (extReqMap.empty()) //No more Requests
 				(*intIter).second.setDir(""); //No current direction
 			else if (nextExtFloor < currentIntFloor) //Go to next External down user

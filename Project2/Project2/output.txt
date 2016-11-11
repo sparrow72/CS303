@@ -1,3 +1,2 @@
 User	Start Time	Final Time	 Start Floor	Destination Floor
 0		1			0            7				20
-1		0			0            0				0
