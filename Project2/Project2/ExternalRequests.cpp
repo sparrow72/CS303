@@ -4,6 +4,7 @@
 // Prof. Mohammad Kuhail
 
 #include "ExternalRequests.h"
+#include "User.h"
 
 ExternalRequests::ExternalRequests(){}
 
@@ -19,6 +20,9 @@ void ExternalRequests::addDownUser(int userNum)
 
 int ExternalRequests::getUpUser()
 {
+	/*User usr;
+	while (usr.getStartTime() <=0)
+	{ }*/
     int tempUser;
     tempUser = upLine.front();
 	upLine.pop();

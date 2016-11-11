@@ -26,7 +26,7 @@ void InternalRequests::addUser(int userNum)
 
 bool InternalRequests::hasExitUser()
 {
-    if (line.front() != NULL) 
+    if (line.empty())
         return false;
     else
         return true;
