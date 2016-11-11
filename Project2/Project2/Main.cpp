@@ -74,19 +74,19 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 		if (extReqMap.count(uFloor) > 0)//if key exists
 		{
 			if (uDir == "up") //Going Up
-				extReqMap[dFloor].addUpUser(id); //Add User going up External
+				extReqMap[uFloor].addUpUser(id); //Add User going up External
 			else if (uDir == "down") //Going Down
-				extReqMap[dFloor].addDownUser(id); //Add User going down External
+				extReqMap[uFloor].addDownUser(id); //Add User going down External
 			cTime++; //Increment time
 		}
 		else //key does not exist
 		{
 			ExternalRequests extReq; //No Key exists
-			extReqMap.insert(pair<int, ExternalRequests>(dFloor, extReq)); //Insert User to Map External
+			extReqMap.insert(pair<int, ExternalRequests>(uFloor, extReq)); //Insert User to Map External
 			if (uDir == "up") //Going Up
-				extReqMap[dFloor].addUpUser(id); //External User Up
+				extReqMap[uFloor].addUpUser(id); //External User Up
 			else if (uDir == "down") //Going Down
-				extReqMap[dFloor].addDownUser(id); //External User Down
+				extReqMap[uFloor].addDownUser(id); //External User Down
 			cTime++; //Increment Time
 		}
 		if (fin.good()) //File good
@@ -121,24 +121,10 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				int id, dFloor; //Create Variables
 				double uTime = 0;
 
-
-
 				id = extReqMap[intIter->first].getUpUser(); //Get the first user
-				cout << endl << id;
 				uTime = uMap[id].getStartTime(); //Get the request time
-												 /// this code is reading in the wrong user
-												 /// ///////////////////////////////////////////////
-												 // ///////////////////////////////////////////////
-												 // //////////////////////////////////////////////
-												 // /////////////////////////////////////////////
-												 /*if (uTime == 0)
-												 {
-												 id = extReqMap[intIter->first].getUpUser();
-
-												 }*/
 
 				dFloor = uMap[id].getDestFloor(); //Get destination
-				cout << endl << dFloor;
 				if (intReqMap.count(dFloor) > 0)//If key exists
 				{
 					intReqMap[dFloor].addUser(id); //Add user for Internal

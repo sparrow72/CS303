@@ -25,7 +25,6 @@ int ExternalRequests::getUpUser()
 	{ }*/
     int tempUser;
     tempUser = upLine.front();
-	cout << tempUser << endl << upLine.front();
 	upLine.pop();
     return tempUser;
 }
