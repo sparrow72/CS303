@@ -346,8 +346,11 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 		}
 		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first; //Set current, ending floor
 		--intIter;
-		if (intIter != intReqMap.end()) //Not at the end of internal requests
-			nextIntFloor = (*intIter).first; //Go to next internal request
+        if (intIter != intReqMap.end()) //Not at the end of internal requests
+            nextIntFloor = (*intIter).first; //Go to next internal request
+        else
+            intIter = intReqMap.begin();
+
 		++intIter;
 
 		//Moves elevator

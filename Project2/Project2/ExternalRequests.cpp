@@ -33,7 +33,7 @@ int ExternalRequests::getDownUser()
 {
     int tempUser;
     tempUser = downLine.front();
-	upLine.pop();
+    downLine.pop();
     return tempUser;
 }
 
