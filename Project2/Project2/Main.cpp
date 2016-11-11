@@ -354,8 +354,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
         else
             intIter = intReqMap.begin();
 
-		++intIter;
-
 		//Moves elevator
 		if (intReqMap.size() == 1)// if no more req
 		{
