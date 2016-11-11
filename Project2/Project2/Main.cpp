@@ -27,14 +27,14 @@ int main()
 	map<int, User> uMap; //Create a User Map
 	map<int, ExternalRequests> extReqMap; //Create a Map of external (Outside elevator) requests
 	map<int, InternalRequests> intReqMap; //Create a Map of internal (Inside elevator) requests
-	intReqMap.insert(pair<int, InternalRequests>(1, intReq)); 
+	intReqMap.insert(pair<int, InternalRequests>(1, intReq));
 	map<int, InternalRequests>::iterator intIter = intReqMap.begin(); //Create an iterator at the beginning
 
 	int id = 0; //Default ID
-	double cTime, uTime = 0; //Current time hh.mm.ss
-    omp_set_num_threads(3); //Parallel the for loop
-#pragma omp parallel for
-	for (double cTime = 000000;cTime < 21; cTime++) 
+	double cTime = 1, uTime = 1; //Current time hh.mm.ss
+//	omp_set_num_threads(3); //Parallel the for loop
+//#pragma omp parallel for
+	for (double cTime = 000000;cTime < 200; cTime++)
 	{ //This for loop is executing all of the requests
 		extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 		elevator(cTime, intIter, intReqMap, uMap, extReqMap);
@@ -53,7 +53,7 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 
 	string uDir; //Elevator Direction
 	int uFloor, dFloor; //user floor and destination floor.
-	if (uTime == 0) //Start inputting requests
+	if (uTime == 1) //Start inputting requests
 		fin >> uTime; //Input time
 
 	///maybe just make this a wrapper function, and call the other one when the time matches
@@ -69,28 +69,32 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 		User usr; //Create user class
 		usr = User(uTime, uFloor, dFloor, uDir); //Create User
 		uMap.insert(pair<int, User>(id, usr)); //Insert User into Map
-		id++; //Increment next ID
+		
 
 		if (extReqMap.count(uFloor) > 0)//if key exists
 		{
 			if (uDir == "up") //Going Up
-				extReqMap[uFloor].addUpUser(id); //Add User going up External
+				extReqMap[dFloor].addUpUser(id); //Add User going up External
 			else if (uDir == "down") //Going Down
-				extReqMap[uFloor].addDownUser(id); //Add User going down External
+				extReqMap[dFloor].addDownUser(id); //Add User going down External
 			cTime++; //Increment time
 		}
 		else //key does not exist
 		{
 			ExternalRequests extReq; //No Key exists
-			extReqMap.insert(pair<int, ExternalRequests>(uFloor, extReq)); //Insert User to Map External
+			extReqMap.insert(pair<int, ExternalRequests>(dFloor, extReq)); //Insert User to Map External
 			if (uDir == "up") //Going Up
-				extReqMap[uFloor].addUpUser(id); //External User Up
+				extReqMap[dFloor].addUpUser(id); //External User Up
 			else if (uDir == "down") //Going Down
-				extReqMap[uFloor].addDownUser(id); //External User Down
+				extReqMap[dFloor].addDownUser(id); //External User Down
 			cTime++; //Increment Time
 		}
 		if (fin.good()) //File good
 			fin >> uTime; //New Time
+		else
+			uTime = -1;
+
+		id++; //Increment next ID
 	}
 	//fin.close(); //Close File
 }
@@ -116,26 +120,16 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				cTime++; //Increment time
 				int id, dFloor; //Create Variables
 				double uTime = 0;
-				/// this code is reading in the wrong user
-				/// ///////////////////////////////////////////////
-				// ///////////////////////////////////////////////
-				/// /////////////////////////////////////////////
-				// /////////////////////////////////////////////
-				/// ///////////////////////////////////////////
-				// ///////////////////////////////////////////
-				/// /////////////////////////////////////////
-				// /////////////////////////////////////////
-				/// ///////////////////////////////////////
-				// ///////////////////////////////////////
-				/// /////////////////////////////////////
-				// /////////////////////////////////////
-				/// ///////////////////////////////////
-				// ///////////////////////////////////
-				/// /////////////////////////////////
-				// /////////////////////////////////
+				
+
 
 				id = extReqMap[intIter->first].getUpUser(); //Get the first user
 				uTime = uMap[id].getStartTime(); //Get the request time
+				/// this code is reading in the wrong user
+				/// ///////////////////////////////////////////////
+				// ///////////////////////////////////////////////
+				// //////////////////////////////////////////////
+				// /////////////////////////////////////////////
 				/*if (uTime == 0)
 				{
 					id = extReqMap[intIter->first].getUpUser();
@@ -490,6 +484,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 
 void ticks(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int, InternalRequests>& intReqMap)
 {
+	int floorRate = 1;
 	if ((*intIter).second.getDir() == "up") //If going up
 	{
 		int f1 = intIter->first; //Save user
@@ -499,7 +494,7 @@ void ticks(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int
 		else
 		{
 			int f2 = intIter->first; //Save user
-			cTime += 5 * abs(f1 - f2);
+			cTime += floorRate * abs(f1 - f2);
 			intReqMap.erase(f1); //Delete User
 			(*intIter).second.setDir("up"); //Go up
 		}
@@ -513,7 +508,7 @@ void ticks(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int
 		else
 		{
 			int f2 = intIter->first; //Save user
-			cTime += 3 * abs(f1 - f2);
+			cTime += floorRate * abs(f1 - f2);
 			intReqMap.erase(f1); //Delete User
 			(*intIter).second.setDir("down"); //Go down
 		}
