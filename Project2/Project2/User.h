@@ -23,6 +23,7 @@ public:
 	int getStartFloor();
     double getFinalTime();
 	double getStartTime();
+	string getUDir();
     void setFinalTime(double FT);
 
 private:

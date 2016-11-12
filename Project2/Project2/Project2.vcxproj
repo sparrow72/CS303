@@ -114,6 +114,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="backup2.cpp" />
+    <ClCompile Include="backup_of_main.cpp" />
     <ClCompile Include="ExternalRequests.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>

@@ -35,6 +35,11 @@ double User::getStartTime()
 	return uTime;
 }
 
+string User::getUDir()
+{
+	return uDir;
+}
+
 void User::setFinalTime(double FT)
 {
     exitTime = FT;
