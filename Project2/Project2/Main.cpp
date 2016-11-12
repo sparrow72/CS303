@@ -560,12 +560,11 @@ void ticks(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int
 void userOutput(map<int, User>& uMap)
 {
 	ofstream fout("output.txt"); //Output file
-
 	fout << "User\tStart Time\tFinal Time\t Start Floor\tDestination Floor\n"; //Output format
 	for (map<int, User>::iterator iter = uMap.begin(); iter != uMap.end(); iter++)
 	{ //Output the map
-		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << setw(13) <<
-			(*iter).second.getStartFloor() << "\t\t\t\t" << (*iter).second.getDestFloor() << endl;
+		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << setw(15) <<
+			(*iter).second.getStartFloor() << setw(10) << "\t\t\t" << (*iter).second.getDestFloor() << endl;
 	}
 	fout.close(); //Close the file
 }
