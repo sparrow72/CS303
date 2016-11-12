@@ -34,9 +34,10 @@ int main()
 
 	int id = 0; //Default ID
 	double cTime = 1, uTime = 1; //Current time hh.mm.ss
-								 	omp_set_num_threads(3); //Parallel the for loop
-								 #pragma omp parallel for
-	for (cTime = 1;cTime < 9000000; cTime++)
+
+	omp_set_num_threads(3); //Parallel the for loop
+#pragma omp parallel for
+	for (cTime = 1;cTime < 100000; cTime++)
 	{ //This for loop is executing all of the requests
 		extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap);
@@ -94,14 +95,18 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 
 		id++; //Increment next ID
 	}
-	
+
 }
 
 void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int, InternalRequests>& intReqMap, map<int, User>& uMap, map<int, ExternalRequests>& extReqMap)
 {///run this function in parallel
+	//Elevator is going up
+	////////////////////////////////
+	////////////////////////////////
 	if ((*intIter).second.getDir() == "up") //Elevator is going up
 	{
-		if ((*intIter).second.hasExitUser()) //Let People Off
+		//Let People Off
+		if ((*intIter).second.hasExitUser()) 
 		{
 			while ((*intIter).second.hasExitUser()) //Has User getting off
 			{
@@ -111,7 +116,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			}
 		}
 
-		if (extReqMap.count(intIter->first) > 0) //Let people on
+		//Let people on
+		if (extReqMap.count(intIter->first) > 0) 
 		{
 			while (extReqMap[intIter->first].hasUpUsers()) //External has Users going up
 			{
@@ -157,6 +163,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				++extIter; //Add a new passenger
 			}
 		}
+
 		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first; //Start floor, end floor
 		++intIter; //Add Internal
 		if (intIter != intReqMap.end()) //More internal passengers
@@ -165,8 +172,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 
 
 		//moves elevator
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////
+		////////////////////////////////
 		if (intReqMap.size() == 1)//If no more int req
 		{
 
@@ -197,7 +204,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq)); //New Internal Request
 					ticks(cTime, intIter, intReqMap);
-					
+
 				}
 				else //is on same floor
 				{
@@ -267,9 +274,12 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 	}
 
 	//Elevator is going down
+	////////////////////////////////
+	////////////////////////////////
 	else if ((*intIter).second.getDir() == "down")
 	{
-		if ((*intIter).second.hasExitUser()) //Lets people off
+		//Lets people off
+		if ((*intIter).second.hasExitUser()) 
 		{
 			while ((*intIter).second.hasExitUser()) //Has an exitter
 			{
@@ -278,35 +288,15 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				uMap[id].setFinalTime(cTime); //Set arrival time
 			}
 		}
-		if (extReqMap.count(intIter->first) > 0) //Lets people on
+
+		//Lets people on
+		if (extReqMap.count(intIter->first) > 0)
 		{
 			while (extReqMap[intIter->first].hasDownUsers()) //Need to go down
 			{
 				cTime++;
 				int id = extReqMap[intIter->first].getDownUser(); //Set ID for going down
 				int dFloor = uMap[id].getDestFloor(); //Set ending floor
-													  /// this code is reading in the wrong user
-													  /// /////////////////////////////////////////////// Redacted code from the US Gov
-													  // ///////////////////////////////////////////////
-													  /// /////////////////////////////////////////////
-													  // /////////////////////////////////////////////
-													  /// ///////////////////////////////////////////
-													  // ///////////////////////////////////////////
-													  /// /////////////////////////////////////////
-													  // /////////////////////////////////////////
-													  /// ///////////////////////////////////////
-													  // ///////////////////////////////////////
-													  /// /////////////////////////////////////
-													  // 888'Y88     e   e     888 ///////////   
-													  ///888, 'Y    d8b d8b    888 //////////
-													  // 888C8     e Y8b Y8b   888 /////////
-													  ///888 "    d8b Y8b Y8b  888  ,d ////
-													  // 888     d888b Y8b Y8b 888, d88 //
-													  // ////////////////////////////////
-													  /// //////////////////////////////
-													  // //////////////////////////////
-													  /// ////////////////////////////
-													  // ////////////////////////////
 
 
 				if (intReqMap.count(dFloor) > 0) //If key exists
@@ -327,6 +317,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				extReqMap.erase(intIter->first); //Erase
 			}
 		}
+
 		//Gets current and next floors
 		int nextExtFloor = intIter->first;
 		if (!extReqMap.empty())
@@ -353,6 +344,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			intIter = intReqMap.begin();
 
 		//Moves elevator
+		////////////////////////////////
+		////////////////////////////////
 		if (intReqMap.size() == 1)// if no more req
 		{
 			if (extReqMap.empty()) //No more Requests
@@ -445,8 +438,18 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 	}
 
 	//Elevator is not moving
+	////////////////////////////////
+	////////////////////////////////
 	else if ((*intIter).second.getDir() == "")
 	{///make sure to only send closest elevator to new external requests
+		while ((*intIter).second.hasExitUser()) //Has User getting off
+		{
+			cTime++; //Increment time
+			int id = (*intIter).second.removeUser(); //Remove passenger
+			uMap[id].setFinalTime(cTime); //Set their arrival time
+		}
+
+
 		if (!extReqMap.empty())
 		{
 			map<int, ExternalRequests>::iterator down = extReqMap.lower_bound(intIter->first);
