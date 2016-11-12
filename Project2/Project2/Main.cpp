@@ -333,6 +333,15 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 		if (!extReqMap.empty())
 		{
 			map<int, ExternalRequests>::iterator extIter = extReqMap.lower_bound(intIter->first);
+			
+			if (extIter == extReqMap.end()) //Not at the end of internal requests
+			{
+				--extIter;
+			}
+			if (extIter == extReqMap.begin())
+			{
+				nextExtFloor = extIter->first;
+			}
 			while (extIter != extReqMap.begin()) //check all floors above elevator
 			{
 				if ((*extIter).second.hasDownUsers()) //Needs to go down
