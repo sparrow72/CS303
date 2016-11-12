@@ -413,6 +413,10 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			{
 				ticks(cTime, intIter, intReqMap);
 			}
+			else if (nextExtFloor < nextIntFloor) //Next ext down user between the floors
+			{
+				ticks(cTime, intIter, intReqMap);
+			}
 		}
 		else if (currentIntFloor == nextIntFloor) //Is at bottom with requests for upper floors
 		{
