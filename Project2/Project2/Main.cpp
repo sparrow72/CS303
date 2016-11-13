@@ -39,33 +39,78 @@ int main()
 
 	extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 
+	///parallel: reduction
+	//omp_set_num_threads(3); //create 3 threads
+	//#pragma omp parallel for private (cTime) reduction(+:cTime)
+	//for (cTime; cTime < 1000; ++cTime) {
+	//	elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
+	//	elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+	//	elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
+	//}
 
-	/*while (cTime < 1000)
-	{ *///This for loop is executing all of the requests
+	///parallel: critical
+	//	omp_set_num_threads(3); //create 3 threads
+	//#pragma omp parallel for private (cTime)
+	//	for (cTime; cTime < 1000; ++cTime) {
+	//#pragma omp critical
+	//		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
+	//#pragma omp critical
+	//		elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+	//#pragma omp critical
+	//		elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
+	//	}
+
+	///parallel: atomic
+	//	omp_set_num_threads(3); //create 3 threads
+	//#pragma omp parallel for private (cTime)
+	//	for (cTime; cTime < 1000; ++cTime) {
+	//#pragma omp atomic
+	//		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
+	//#pragma omp atomic
+	//		elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+	//#pragma omp atomic
+	//		elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
+	//	}
+
+	///parallel: section
 		omp_set_num_threads(3); //create 3 threads
-#pragma omp parallel// sections
+	#pragma omp parallel sections private (cTime)
 		{
-	#pragma omp section
+		#pragma omp section
 			while (cTime < 1000)
 			{ //This for loop is executing all of the requests
 				elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
 				cTime++;
 			}
-	#pragma omp section
+		#pragma omp section
 			while (cTime < 1000)
 			{ //This for loop is executing all of the requests
 				elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
 				cTime++;
 			}
-	#pragma omp section
+		#pragma omp section
 			while (cTime < 1000)
 			{ //This for loop is executing all of the requests
 				elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
 				cTime++;
 			}
 		}
-		/*cTime++;
-	}*/
+
+	///parallel: section2
+	//	while (cTime < 1000)
+	//	{ //This for loop is executing all of the requests
+	//		omp_set_num_threads(3); //create 3 threads
+	//#pragma omp parallel sections private (cTime)
+	//		{
+	//	#pragma omp section
+	//				elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
+	//	#pragma omp section
+	//				elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+	//	#pragma omp section
+	//				elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
+	//		}
+	//		cTime++;
+	//	}
 
 	userOutput(uMap); //Output the final Map
 
