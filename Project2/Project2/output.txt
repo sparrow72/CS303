@@ -1,14 +1,44 @@
-User	Arrival Time	 Start Floor	Destination Floor
-0			10sec			     3   		6
-1			9sec			     7   		9
-2			18sec			     8   		6
-3			2sec			     5   		1
-4			43sec			    10   		50
-5			1mins 17sec			51   		60
-6			9sec			    10   		15
-7			1mins 11sec			22   		1
-8			2mins 4sec			 2   		50
-9			1mins 23sec			 5   		10
-10			1mins 17sec			57   		22
-11			36sec			    22   		10
-12			30sec			    20   		30
+User	Travel Time		 Start Floor	Destination Floor
+0			12sec			     3   		6
+1			2sec			     5   		1
+2			23sec			    18   		25
+3			55sec			    29   		2
+4			1mins 15sec			 4   		13
+5			8sec			    19   		10
+6			1mins 1sec			 7   		9
+7			13sec			     8   		6
+8			15sec			     5   		1
+9			1mins 51sec			10   		50
+10			50sec			    51   		60
+11			20sec			     8   		6
+12			45sec			    20   		12
+13			1mins 49sec			40   		51
+14			1mins 19sec			60   		89
+15			49sec			    66   		69
+16			33sec			     1   		40
+17			2mins 32sec			22   		1
+18			50sec			     1   		15
+19			40sec			    16   		17
+20			55sec			    45   		23
+21			1mins 55sec			57   		22
+22			2mins 4sec			22   		10
+23			37sec			    20   		30
+24			1mins 10sec			 8   		6
+25			1mins 10sec			 5   		1
+26			1mins 10sec			10   		50
+27			2mins 25sec			61   		32
+28			1mins 6sec			51   		60
+29			1mins 18sec			10   		15
+30			1mins 24sec			72   		80
+31			1mins 21sec			22   		1
+32			1mins 23sec			 2   		50
+33			1mins 30sec			 5   		10
+34			1mins 40sec			55   		46
+35			1mins 16sec			80   		61
+36			53sec			    50   		65
+37			5mins 0sec			43   		21
+38			6mins 40sec			50   		90
+39			8mins 20sec			95   		12
+40			10mins 0sec			18   		50
+41			15mins 0sec			99   		2
+42			15mins 50sec		 5   		75
