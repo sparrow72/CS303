@@ -35,31 +35,24 @@ int main()
 	map<int, InternalRequests>::iterator intIter2 = intReqMap[2].begin(); //Create an iterator at the beginning
 
 	int id = 0; //Default ID
-	double cTime = 1, uTime = 1; //Current time hh.mm.ss
+	double cTime = 1, cTime1 = 1, cTime2 = 1, uTime = 1; //Current time hh.mm.ss
 
 	extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 	///parallel: section
-		omp_set_num_threads(3); //create 3 threads
+	///parallel: section2
+	while (cTime < 1000)
+		{ //This for loop is executing all of the requests
+			omp_set_num_threads(3); //create 3 threads
 	#pragma omp parallel sections private (cTime)
-		{
+			{
 		#pragma omp section
-			while (cTime < 1000)
-			{ //This for loop is executing all of the requests
-				elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
-				cTime++;
-			}
+					elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
 		#pragma omp section
-			while (cTime < 1000)
-			{ //This for loop is executing all of the requests
-				elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
-				cTime++;
-			}
+					elevator(cTime1, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
 		#pragma omp section
-			while (cTime < 1000)
-			{ //This for loop is executing all of the requests
-				elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
-				cTime++;
+					elevator(cTime2, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
 			}
+			cTime++;
 		}
 
 	userOutput(uMap); //Output the final Map
