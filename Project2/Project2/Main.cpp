@@ -26,11 +26,13 @@ int main()
 	InternalRequests intReq;
 	map<int, User> uMap; //Create a User Map
 	map<int, ExternalRequests> extReqMap; //Create a Map of external (Outside elevator) requests
-	map<int, InternalRequests> intReqMap[2]; //Create a Map of internal (Inside elevator) requests
+	map<int, InternalRequests> intReqMap[3]; //Create a Map of internal (Inside elevator) requests
 	intReqMap[0].insert(pair<int, InternalRequests>(1, intReq));
 	map<int, InternalRequests>::iterator intIter = intReqMap[0].begin(); //Create an iterator at the beginning
 	intReqMap[1].insert(pair<int, InternalRequests>(1, intReq));
-	map<int, InternalRequests>::iterator intIter2 = intReqMap[1].begin(); //Create an iterator at the beginning
+	map<int, InternalRequests>::iterator intIter1 = intReqMap[1].begin(); //Create an iterator at the beginning
+	intReqMap[2].insert(pair<int, InternalRequests>(1, intReq));
+	map<int, InternalRequests>::iterator intIter2 = intReqMap[2].begin(); //Create an iterator at the beginning
 
 	int id = 0; //Default ID
 	double cTime = 1, uTime = 1; //Current time hh.mm.ss
@@ -38,16 +40,27 @@ int main()
 	extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 
 
-	while (cTime < 100000)
+	while (cTime < 1000)
 	{ //This for loop is executing all of the requests
-	//	omp_set_num_threads(2); //create 2 threads
-	//	#pragma omp parallel sections
-	//	{	
-	//		#pragma omp section
-		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
-		//		#pragma omp section
-		//			elevator(cTime, intIter2, intReqMap[1], uMap, extReqMap);
-		//	}
+		omp_set_num_threads(3); //create 3 threads
+#pragma omp parallel// sections
+		{
+#pragma omp section
+			while (cTime < 1000)
+			{ //This for loop is executing all of the requests
+				elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
+			}
+#pragma omp section
+			while (cTime < 1000)
+			{ //This for loop is executing all of the requests
+			elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+			}
+#pragma omp section
+				while (cTime < 1000)
+				{ //This for loop is executing all of the requests
+			elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
+				}
+		}
 		cTime++;
 	}
 
@@ -320,7 +333,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				extReqMap.erase(intIter->first); //Erase
 			}
 		}
-		
+
 		//Lets people off
 		if ((*intIter).second.hasExitUser())
 		{
@@ -338,7 +351,7 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 		if (!extReqMap.empty())
 		{
 			map<int, ExternalRequests>::iterator extIter = extReqMap.lower_bound(intIter->first);
-			
+
 			if (extIter == extReqMap.end()) //Not at the end of internal requests
 			{
 				--extIter;
@@ -573,8 +586,8 @@ void userOutput(map<int, User>& uMap)
 	fout << "User\tStart Time\tFinal Time\t Start Floor\tDestination Floor\n"; //Output format
 	for (map<int, User>::iterator iter = uMap.begin(); iter != uMap.end(); iter++)
 	{ //Output the map
-		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << setw(15) <<
-			(*iter).second.getStartFloor() << setw(10) << "\t\t\t" << (*iter).second.getDestFloor() << endl;
+		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << "\t\t\t" << setw(2) <<
+			(*iter).second.getStartFloor() << setw(10) << "\t\t" << (*iter).second.getDestFloor() << endl;
 	}
 	fout.close(); //Close the file
 }
