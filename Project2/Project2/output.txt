@@ -1,13 +1,14 @@
-User	Start Time	Final Time	 Start Floor	Destination Floor
-0		1			11			 3        		6
-1		13			22			 7        		9
-2		13			31			 8        		6
-3		15			42			 5        		1
-4		17			100			10        		50
-5		19			116			51        		60
-6		33			62			10        		15
-7		50			186			22        		1
-8		50			243			 2        		50
-9		50			201			 5        		10
-10		62			161			57        		22
-11		67			175			22        		10
+User	Arrival Time	 Start Floor	Destination Floor
+0		3hrs 0mins 10sec		 3        		6
+1		3hrs 0mins 9sec			 7        		9
+2		3hrs 0mins 18sec		 8        		6
+3		3hrs 0mins 27sec		 5        		1
+4		3hrs 1mins 23sec		10        		50
+5		3hrs 1mins 37sec		51        		60
+6		3hrs 0mins 29sec		10        		15
+7		3hrs 2mins 16sec		22        		1
+8		3hrs 3mins 13sec		 2        		50
+9		3hrs 2mins 31sec		 5        		10
+10		3hrs 1mins 39sec		57        		22
+11		3hrs 1mins 48sec		22        		10
+12		3hrs 0mins 45sec		20        		30

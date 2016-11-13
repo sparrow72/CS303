@@ -38,40 +38,6 @@ int main()
 	double cTime = 1, uTime = 1; //Current time hh.mm.ss
 
 	extRequests(uMap, extReqMap, cTime, id, fin, uTime);
-
-	///parallel: reduction
-	//omp_set_num_threads(3); //create 3 threads
-	//#pragma omp parallel for private (cTime) reduction(+:cTime)
-	//for (cTime; cTime < 1000; ++cTime) {
-	//	elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
-	//	elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
-	//	elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
-	//}
-
-	///parallel: critical
-	//	omp_set_num_threads(3); //create 3 threads
-	//#pragma omp parallel for private (cTime)
-	//	for (cTime; cTime < 1000; ++cTime) {
-	//#pragma omp critical
-	//		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
-	//#pragma omp critical
-	//		elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
-	//#pragma omp critical
-	//		elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
-	//	}
-
-	///parallel: atomic
-	//	omp_set_num_threads(3); //create 3 threads
-	//#pragma omp parallel for private (cTime)
-	//	for (cTime; cTime < 1000; ++cTime) {
-	//#pragma omp atomic
-	//		elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
-	//#pragma omp atomic
-	//		elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
-	//#pragma omp atomic
-	//		elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
-	//	}
-
 	///parallel: section
 		omp_set_num_threads(3); //create 3 threads
 	#pragma omp parallel sections private (cTime)
@@ -96,22 +62,6 @@ int main()
 			}
 		}
 
-	///parallel: section2
-	//	while (cTime < 1000)
-	//	{ //This for loop is executing all of the requests
-	//		omp_set_num_threads(3); //create 3 threads
-	//#pragma omp parallel sections private (cTime)
-	//		{
-	//	#pragma omp section
-	//				elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
-	//	#pragma omp section
-	//				elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
-	//	#pragma omp section
-	//				elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
-	//		}
-	//		cTime++;
-	//	}
-
 	userOutput(uMap); //Output the final Map
 
 	fin.close(); //Close the file
@@ -120,25 +70,17 @@ int main()
 
 void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, double& cTime, int& id, istream& fin, double& uTime)
 {///dont forget about capacity of elevator
- ////opens the file
-
-
-
-	string uDir; //Elevator Direction
+    string uDir; //Elevator Direction
 	int uFloor, dFloor; //user floor and destination floor.
 	if (uTime == 1) //Start inputting requests
 		fin >> uTime; //Input time
-
-
-					  //inputs data from txt file
+	//inputs data from txt file
 	if (uTime <= cTime && fin.good()) //If atleast 1 request and file is reading
 	{
 		fin >> uDir >> uFloor >> dFloor; //Input direction and floors
 		User usr; //Create user class
 		usr = User(uTime, uFloor, dFloor, uDir); //Create User
 		uMap.insert(pair<int, User>(id, usr)); //Insert User into Map
-
-
 		if (extReqMap.count(uFloor) > 0)//if key exists
 		{
 			if (uDir == "up") //Going Up
@@ -161,8 +103,7 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 			fin >> uTime; //New Time
 		else
 			uTime = -1;
-
-		id++; //Increment next ID
+        id++; //Increment next ID
 	}
 
 }
@@ -170,8 +111,6 @@ void extRequests(map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, do
 void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int, InternalRequests>& intReqMap, map<int, User>& uMap, map<int, ExternalRequests>& extReqMap, int& _id, istream& _fin, double& _uTime)
 {///run this function in parallel
  //Elevator is going up
- ////////////////////////////////
- ////////////////////////////////
 	if ((*intIter).second.getDir() == "up") //Elevator is going up
 	{
 		//Let people on
@@ -182,10 +121,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				cTime++; //Increment time
 				int id, dFloor; //Create Variables
 				double uTime = 0;
-
 				id = extReqMap[intIter->first].getUpUser(); //Get the first user
 				uTime = uMap[id].getStartTime(); //Get the request time
-
 				dFloor = uMap[id].getDestFloor(); //Get destination
 				if (intReqMap.count(dFloor) > 0)//If key exists
 				{
@@ -205,7 +142,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				extReqMap.erase(intIter->first); //Delete External Request
 			}
 		}
-
 		//Let People Off
 		if ((*intIter).second.hasExitUser())
 		{
@@ -216,7 +152,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				uMap[id].setFinalTime(cTime); //Set their arrival time
 			}
 		}
-
 		//gets current and next floors
 		extRequests(uMap, extReqMap, cTime, _id, _fin, _uTime);
 		int nextExtFloor = intIter->first; //Next stop
@@ -233,26 +168,19 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				++extIter; //Add a new passenger
 			}
 		}
-
 		int currentIntFloor = (*intIter).first, nextIntFloor = (*intIter).first; //Start floor, end floor
 		++intIter; //Add Internal
 		if (intIter != intReqMap.end()) //More internal passengers
 			nextIntFloor = (*intIter).first; //Next floor
 		--intIter; //Remove a passenger
-
-
-		//moves elevator
-		////////////////////////////////
-		////////////////////////////////
+		
+        //moves elevator
 		if (nextExtFloor == nextIntFloor && nextIntFloor != currentIntFloor)
 		{
 			ticks(cTime, intIter, intReqMap);
-
 		}
 		else if (intReqMap.size() == 1)//If no more int req
 		{
-
-
 			if (extReqMap.empty())//no more req
 				(*intIter).second.setDir("");
 			else if (nextExtFloor > currentIntFloor)//go to next ext up user
@@ -260,7 +188,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq)); //Add new request
 				ticks(cTime, intIter, intReqMap); //Change time
-												  //++intIter;
 			}
 			else //Go to extReqMap.end()
 			{
@@ -271,7 +198,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq)); //New Internal request
 					ticks(cTime, intIter, intReqMap);
-					//++intIter;					
 				}
 				else if ((*extEnd).first < currentIntFloor)//Going down
 				{
@@ -279,7 +205,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq)); //New Internal Request
 					ticks(cTime, intIter, intReqMap);
-
 				}
 				else //is on same floor
 				{
@@ -296,12 +221,10 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
 				ticks(cTime, intIter, intReqMap);
-				//++intIter;
 			}
 			else //next ext up user is above the next int floor
 			{
 				ticks(cTime, intIter, intReqMap);
-				//++intIter;
 			}
 
 		}
@@ -311,15 +234,12 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			{
 				(*intIter).second.setDir("down"); //Going down
 				ticks(cTime, intIter, intReqMap);
-				//--intIter;				
 			}
 			else if (nextExtFloor > currentIntFloor) //External Up user above current floor
-			{
-				//Go that floor
+			{//Go that floor
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
 				ticks(cTime, intIter, intReqMap);
-				//++intIter;
 			}
 			else //go to extReqMap.end()
 			{
@@ -330,7 +250,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
 					ticks(cTime, intIter, intReqMap);
-					//++intIter;
 				}
 				else if ((*extEnd).first < (*intIter).first) //Going down
 				{
@@ -338,7 +257,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
 					ticks(cTime, intIter, intReqMap);
-					//--intIter;
 				}
 				else //Is on same floor
 				{
@@ -349,8 +267,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 	}
 
 	//Elevator is going down
-	////////////////////////////////
-	////////////////////////////////
 	else if ((*intIter).second.getDir() == "down")
 	{
 		//Lets people on
@@ -361,8 +277,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				cTime++;
 				int id = extReqMap[intIter->first].getDownUser(); //Set ID for going down
 				int dFloor = uMap[id].getDestFloor(); //Set ending floor
-
-
 				if (intReqMap.count(dFloor) > 0) //If key exists
 				{
 					intReqMap[dFloor].addUser(id); //Add the user riding
@@ -429,12 +343,9 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			intIter = intReqMap.begin();
 
 		//Moves elevator
-		////////////////////////////////
-		////////////////////////////////
 		if (nextExtFloor == nextIntFloor && nextIntFloor != currentIntFloor)
 		{
 			ticks(cTime, intIter, intReqMap);
-
 		}
 		else if (intReqMap.size() == 1)// if no more req
 		{
@@ -445,7 +356,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
 				ticks(cTime, intIter, intReqMap); //Add the new user
-
 			}
 			else //Go to extReqMap.begin()
 			{
@@ -478,7 +388,6 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextIntFloor, intReq));
 				ticks(cTime, intIter, intReqMap); //Add new Internal User
-
 			}
 			else if (nextExtFloor > nextIntFloor) //Next ext down user between the floors
 			{
@@ -495,11 +404,9 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 			{
 				(*intIter).second.setDir("up"); //Begin going up
 				ticks(cTime, intIter, intReqMap);
-
 			}
 			else if (nextExtFloor < currentIntFloor) //Ext down user below current floor
-			{
-				//Go that floor
+			{//Go that floor
 				InternalRequests intReq;
 				intReqMap.insert(pair<int, InternalRequests>(nextExtFloor, intReq));
 				ticks(cTime, intIter, intReqMap); //New Internal user
@@ -514,14 +421,12 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
 					ticks(cTime, intIter, intReqMap); //New user
-
 				}
 				else if ((*extEnd).first < (*intIter).first) //Going down
 				{
 					InternalRequests intReq;
 					intReqMap.insert(pair<int, InternalRequests>((*extEnd).first, intReq));
 					ticks(cTime, intIter, intReqMap); //New user
-
 				}
 				else //Is on same floor
 				{
@@ -532,10 +437,8 @@ void elevator(double& cTime, map<int, InternalRequests>::iterator& intIter, map<
 	}
 
 	//Elevator is not moving
-	////////////////////////////////
-	////////////////////////////////
 	else if ((*intIter).second.getDir() == "")
-	{///make sure to only send closest elevator to new external requests
+	{
 		extRequests(uMap, extReqMap, cTime, _id, _fin, _uTime);
 		while ((*intIter).second.hasExitUser()) //Has User getting off
 		{
@@ -631,11 +534,29 @@ void ticks(double& cTime, map<int, InternalRequests>::iterator& intIter, map<int
 void userOutput(map<int, User>& uMap)
 {
 	ofstream fout("output.txt"); //Output file
-	fout << "User\tStart Time\tFinal Time\t Start Floor\tDestination Floor\n"; //Output format
+    fout << "User\tArrival Time\t Start Floor\tDestination Floor\n"; //Output format
 	for (map<int, User>::iterator iter = uMap.begin(); iter != uMap.end(); iter++)
 	{ //Output the map
-		fout << (*iter).first << "\t\t" << (*iter).second.getStartTime() << "\t\t\t" << (*iter).second.getFinalTime() << "\t\t\t" << setw(2) <<
-			(*iter).second.getStartFloor() << setw(10) << "\t\t" << (*iter).second.getDestFloor() << endl;
+        int total = (*iter).second.getFinalTime() - (*iter).second.getStartTime();
+        int min = total / 60;
+        int sec = total % 60;
+        int hour = min / 60;
+        if (hour > 0 && sec < 10) {
+            fout << (*iter).first << "\t\t" << hour << "hrs " << min << "mins " << sec << "sec" << "\t\t\t" << setw(2) <<
+                (*iter).second.getStartFloor() << setw(10) << "\t\t" << (*iter).second.getDestFloor() << endl;
+        }
+        else if (hour > 0) {
+            fout << (*iter).first << "\t\t" << hour << "hrs " << min << "mins " << sec << "sec" << "\t\t" << setw(2) <<
+                (*iter).second.getStartFloor() << setw(10) << "\t\t" << (*iter).second.getDestFloor() << endl;
+        }
+        else if (min > 0) {
+            fout << (*iter).first << "\t\t\t" << min << "mins " << sec << "sec" << "\t\t\t" << setw(2) <<
+                (*iter).second.getStartFloor() << setw(5) << "\t\t" << (*iter).second.getDestFloor() << endl;
+        }
+        else {
+            fout << (*iter).first << "\t\t\t" << sec << "sec" << "\t\t\t" << setw(6) <<
+                (*iter).second.getStartFloor() << setw(5) << "\t\t" << (*iter).second.getDestFloor() << endl;
+        }
 	}
 	fout.close(); //Close the file
 }
