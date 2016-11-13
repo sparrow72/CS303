@@ -40,29 +40,32 @@ int main()
 	extRequests(uMap, extReqMap, cTime, id, fin, uTime);
 
 
-	while (cTime < 1000)
-	{ //This for loop is executing all of the requests
+	/*while (cTime < 1000)
+	{ *///This for loop is executing all of the requests
 		omp_set_num_threads(3); //create 3 threads
 #pragma omp parallel// sections
 		{
-#pragma omp section
+	#pragma omp section
 			while (cTime < 1000)
 			{ //This for loop is executing all of the requests
 				elevator(cTime, intIter, intReqMap[0], uMap, extReqMap, id, fin, uTime);
+				cTime++;
 			}
-#pragma omp section
+	#pragma omp section
 			while (cTime < 1000)
 			{ //This for loop is executing all of the requests
-			elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+				elevator(cTime, intIter1, intReqMap[1], uMap, extReqMap, id, fin, uTime);
+				cTime++;
 			}
-#pragma omp section
-				while (cTime < 1000)
-				{ //This for loop is executing all of the requests
-			elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
-				}
+	#pragma omp section
+			while (cTime < 1000)
+			{ //This for loop is executing all of the requests
+				elevator(cTime, intIter2, intReqMap[2], uMap, extReqMap, id, fin, uTime);
+				cTime++;
+			}
 		}
-		cTime++;
-	}
+		/*cTime++;
+	}*/
 
 	userOutput(uMap); //Output the final Map
 
