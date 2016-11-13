@@ -1,13 +1,14 @@
-#include "User.h"
 // Josh Gregory, Zach Theiss, and Alex Malko
 // CS 303 Project 2C
 // Fall 2016
 // Prof. Mohammad Kuhail
 
+#include "User.h"
+
 User::User(double uT, int uF, int dF, string dir)
 {
-    uTime = uT;
-    uFloor = uF;
+    uTime = uT; //Constructor for the User class
+    uFloor = uF; //Sets passed in values
     dFloor = dF;
     uDir = dir;
     atDest = false;
@@ -16,31 +17,30 @@ User::User(double uT, int uF, int dF, string dir)
 
 int User::getDestFloor()
 {
-	return dFloor;
+	return dFloor; //Get the End Floor
 }
 
 int User::getStartFloor()
 {
-	return uFloor;
+	return uFloor; //Get the start floor
 }
-
 
 double User::getFinalTime()
 {
-    return exitTime;
+    return exitTime; //Get final time
 }
 
 double User::getStartTime()
 {
-	return uTime;
+	return uTime; //Get start time
 }
 
 string User::getUDir()
 {
-	return uDir;
+	return uDir; //Get request direction
 }
 
 void User::setFinalTime(double FT)
 {
-    exitTime = FT;
+    exitTime = FT; //Set time of arrival
 }

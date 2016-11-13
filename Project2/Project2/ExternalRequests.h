@@ -8,9 +8,9 @@
 #include <iostream> //Allows for in and output
 #include <string> //Allows for use of strings
 #include <list> //Allows for use of lists
-#include <locale> //Menu functionality
-#include <iterator> // next
-#include <map> // maps are awesome
+#include <locale>
+#include <iterator> //Parse through
+#include <map> //Main way of tracking
 #include <queue>
 
 using namespace std;
@@ -18,16 +18,16 @@ using namespace std;
 class ExternalRequests
 {
 public:
-    ExternalRequests();
-    void addDownUser(int userNum);
-    void addUpUser(int userNum);
-    int getUpUser();
-    int getDownUser();
-    bool hasUpUsers();
-    bool hasDownUsers();
+    ExternalRequests(); //Default Constructor
+    void addDownUser(int userNum); //Add a User going down
+    void addUpUser(int userNum); //Add a User going up
+    int getUpUser(); //Get next Up Pick up
+    int getDownUser(); //Get next Down Pick up
+    bool hasUpUsers(); //Has someone going up
+    bool hasDownUsers(); //Has someone going down
 
 private:
-    queue<int> upLine;
-    queue<int> downLine;
+    queue<int> upLine; //List of requests Up
+    queue<int> downLine; //List of requests Down
 };
 #endif

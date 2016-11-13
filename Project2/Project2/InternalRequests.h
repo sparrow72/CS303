@@ -8,9 +8,9 @@
 #include <iostream> //Allows for in and output
 #include <string> //Allows for use of strings
 #include <list> //Allows for use of lists
-#include <locale> //Menu functionality
-#include <iterator> // next
-#include <map> // maps are awesome
+#include <locale> 
+#include <iterator> //Parse through
+#include <map> //Main way of tracking
 #include <queue>
 
 using namespace std;
@@ -18,15 +18,15 @@ using namespace std;
 class InternalRequests 
 {
 public:
-    InternalRequests();
-    void setDir(string D);
-    string getDir();
-    void addUser(int userNum);
+    InternalRequests(); //Default constructor
+    void setDir(string D); //Set the direction
+    string getDir(); //Get the direction
+    void addUser(int userNum); //Add someone to the inside elevator requests
     bool hasExitUser(); //Check if Queue empty, true if need off, false otherwise
     int removeUser(); //Return popped item, and remove user from queue
 private:
-	string eDir;
-	queue<int> line;
+	string eDir; //Direction of elevator
+	queue<int> line; //Track everyone in elevator
 
 };
 #endif	

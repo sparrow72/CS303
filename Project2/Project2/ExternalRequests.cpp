@@ -6,40 +6,37 @@
 #include "ExternalRequests.h"
 #include "User.h"
 
-ExternalRequests::ExternalRequests(){}
+ExternalRequests::ExternalRequests(){} //Default constructor
 
 void ExternalRequests::addUpUser(int userNum)
 {
-    upLine.push(userNum);
+    upLine.push(userNum); //Add to queue of going up
 }
 
 void ExternalRequests::addDownUser(int userNum)
 {
-    downLine.push(userNum);
+    downLine.push(userNum); //Add to queue going down
 }
 
 int ExternalRequests::getUpUser()
 {
-	/*User usr;
-	while (usr.getStartTime() <=0)
-	{ }*/
-    int tempUser;
+    int tempUser; //Get the first person off, up
     tempUser = upLine.front();
-	upLine.pop();
+	upLine.pop(); //Remove from the queue
     return tempUser;
 }
 
 int ExternalRequests::getDownUser()
 {
-    int tempUser;
+    int tempUser; //Get first person off, down
     tempUser = downLine.front();
-    downLine.pop();
+    downLine.pop(); //Remove from the queue
     return tempUser;
 }
 
 bool ExternalRequests::hasUpUsers()
 {
-    if (upLine.empty())
+    if (upLine.empty()) //Check if need to go up
         return false;
     else 
         return true;
@@ -47,7 +44,7 @@ bool ExternalRequests::hasUpUsers()
 
 bool ExternalRequests::hasDownUsers()
 {
-    if (downLine.empty())
+    if (downLine.empty()) //Check if need to go down
         return false;
     else
         return true;
