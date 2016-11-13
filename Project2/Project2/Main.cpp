@@ -530,7 +530,11 @@ void userOutput(map<int, User>& uMap)
     fout << "User\tArrival Time\t Start Floor\tDestination Floor\n"; //Output format
 	for (map<int, User>::iterator iter = uMap.begin(); iter != uMap.end(); iter++)
 	{ //Output the map
-        int total = (*iter).second.getFinalTime() - (*iter).second.getStartTime();
+        int total = 0;
+        if ((*iter).second.getFinalTime() > (*iter).second.getStartTime())
+            total = (*iter).second.getFinalTime() - (*iter).second.getStartTime();
+        else
+            total = (*iter).second.getStartTime() - (*iter).second.getFinalTime();
         int min = total / 60;
         int sec = total % 60;
         int hour = min / 60;

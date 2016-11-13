@@ -5,7 +5,7 @@ User	Arrival Time	 Start Floor	Destination Floor
 3			2sec			     5   		1
 4			43sec			    10   		50
 5			1mins 17sec			51   		60
-6			-9sec			    10   		15
+6			9sec			    10   		15
 7			1mins 11sec			22   		1
 8			2mins 4sec			 2   		50
 9			1mins 23sec			 5   		10
