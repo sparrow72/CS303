@@ -7,12 +7,22 @@
 #include <map>
 #include <string>
 #include <fstream>
-
+#include <iterator>
 using namespace std;
 
 int main() {
-    map<char, string> morse_map;
-    fstream fin("morse.txt");
-    fin.open();
+    map<string, string> morse_map;
+    fstream fin;
+    fin.open("morse.txt");
+    while (fin.good()) {
+        string letter, morse;
+        fin >> morse;
+        letter = morse.substr(0, 1);
+        morse.erase(0, 1);
+        morse_map.insert(pair<string, string>(letter, morse));
+    }
 
+
+
+    return 0;
 }
