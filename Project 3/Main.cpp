@@ -38,6 +38,10 @@ int main() {
         for (map<string, string>::iterator Itr = morse_map.begin(); Itr != morse_map.end(); Itr++) {
             if (Itr->second == checker)
                 fout << Itr->first;
+            if (checker == ".") {
+                fout << endl;
+                break;
+            }
         }
     }
     fout.close();
