@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <iterator>
+#include <vector>
 using namespace std;
 
 int main() {
@@ -21,8 +22,24 @@ int main() {
         morse.erase(0, 1);
         morse_map.insert(pair<string, string>(letter, morse));
     }
+    fstream fdecode;
+    ofstream fout;
+    fout.open("Output.txt");
+    fdecode.open("decode.txt");
+    vector <string> to_decode;
+    while (fdecode.good()) {
+        string decode;
+        fdecode >> decode;
+        to_decode.push_back(decode);
+    }
 
-
-
+    for (int i = 0; i < to_decode.size(); i++) {
+        string checker = to_decode[i];
+        for (map<string, string>::iterator Itr = morse_map.begin(); Itr != morse_map.end(); Itr++) {
+            if (Itr->second == checker)
+                fout << Itr->first;
+        }
+    }
+    fout.close();
     return 0;
 }
