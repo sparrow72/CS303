@@ -8,6 +8,7 @@
 #include <fstream> //Used for files
 #include <iterator> //Used to iterate map
 #include <vector> //Used to save the characters in string
+#include "omp.h" //Used for parallelizing
 using namespace std;
 
 void create_morse_map(map<string, string>& morse_map); //Function Declerations
@@ -52,16 +53,24 @@ void decode_message(ostream& fout, map<string,string> morse_map) { //decoding fr
         fdecode >> decode; //Read in
         to_decode.push_back(decode); //Save the string
     }
+    omp_set_num_threads(3);
+#pragma omp parallel for
     for (int i = 0; i < to_decode.size(); i++) { //Go through the vector
         string checker = to_decode[i]; //Save the value to look for
+#pragma omp parallel for
         for (map<string, string>::iterator Itr = morse_map.begin(); Itr != morse_map.end(); Itr++) { //Iterate through map
             if (Itr->second == checker){ //Check if value is same as morse saved
+#pragma omp atomic
                 fout << Itr->first; //If match, output the letter
                 break; //End the for loop
             }
             if (checker == ".") { //End of line
                 fout << endl; //New line
                 break; //End for loop
+            }
+            if (checker == "/") {
+                fout << " ";
+                break;
             }
         }
     }
@@ -84,10 +93,14 @@ void encode_message(ostream& fout, map<string, string> morse_map) { //Encode mes
         }
         to_encode.push_back(encode); //Add the last letter in the string
     }
+    omp_set_num_threads(3);
+#pragma omp parallel for
     for (int i = 0; i < to_encode.size(); i++) { //Go through the vector
         string checker = to_encode[i]; //Save the value to look for
+#pragma omp parallel for
         for (map<string, string>::iterator Itr = morse_map.begin(); Itr != morse_map.end(); Itr++) { //Iterate through map
             if (Itr->first == checker) { //Check if value saved is the same as the letter
+#pragma omp atomic
                 fout << Itr->second << " "; //Output the morse code and space
                 break; //End for loop
             }
