@@ -1,43 +1,49 @@
+// Josh Gregory and Zach Theiss 
+// CS 303 Project 3B
+// Fall 2016
+// Prof. Mohammad Kuhail
+
 #include "Morse_Code.h"
 
 Morse_Code::Morse_Code()
 {
 	root = new tree;
 	root->letter = "~NULL~";
-	root->dotdash = "";
-	root->Left = nullptr;// no nodes
+	root->letterCode = "";
+	root->Left = nullptr;
 	root->Right = nullptr;
 }
 
-void Morse_Code::insertNode(char tempLetter, string code) {
+void Morse_Code::insertNode(char tempLetter, string code)
+{
 	letterToCode[tempLetter] = code;
-	tree *currNode = root;// Pointer to a pointer to root
+	tree *currNode = root;
 	for (int i = 0; i <= code.length(); i++)
 	{
-		if (code[i] == '.')
-		{// left
-			if (currNode->Left == nullptr)
-			{// DNE
-				currNode->Left = new tree;			// make it as empty node
-				currNode = (currNode->Left);		// advance to dummy node
+		if (code[i] == '.')							// go left
+		{
+			if (currNode->Left == nullptr)				// DNE
+			{
+				currNode->Left = new tree;				// empty node
+				currNode = (currNode->Left);
 			}
-			else {
-				currNode = (currNode->Left);		// node exists lets go
-			}
+			else
+				currNode = (currNode->Left);			// node exists
 		}
-		else if (code[i] == '-' || code[i] == '_') { // dash = navigate right
-			if (currNode->Right == nullptr) {
-				currNode->Right = new tree;
-				currNode = (currNode->Right);			// go read the comments above
-			}
-			else {
+		else if (code[i] == '-' || code[i] == '_')	// go right
+		{
+			if (currNode->Right == nullptr)				// DNE
+			{
+				currNode->Right = new tree;				// empty node
 				currNode = (currNode->Right);
 			}
+			else
+				currNode = (currNode->Right);			// node exists
 		}
 	}
 
-	currNode->dotdash = code;							// found the correct location
-	currNode->letter = tempLetter;					// set dots and letters
+	currNode->letterCode = code;						// set dots and letters
+	currNode->letter = tempLetter;
 
 }
 
